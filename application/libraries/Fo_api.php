@@ -121,7 +121,7 @@ class Fo_api
         $Data['to'] = $email;
         $Data['name'] = 'GTX';
         $Data['html'] = $msg;
-        $Data['subject'] = '!';
+        $Data['subject'] = 'O status do seu pedido foi alterado!';
 
         $resp_email = Fo_email::from_system($Data);
 
