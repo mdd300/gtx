@@ -79,7 +79,7 @@ class Fo_api
 '
             .'<div style=" widt:80%; padding: 20px 0px;">'
             . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;display: inline-flex""> Olá <div style="color: #4682B4; font-weight: bold;display: inline-flex; "> &nbsp;'.$nome.'</div></p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px; display: inline-flex">Seja bem vindo a <div style="color: #4682B4; font-weight: bold;display: inline-flex "> &nbsp GTX</div></p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px; display: inline-flex">Seja bem vindo a <div style="color: #4682B4; font-weight: bold;display: inline-flex "> &nbsp; GTX</div></p>'
             . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Seu usuário foi cadastrado em nosso sistema,</p>'
             . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> logo seu pedido estará disponivel para acesso em: </p>' . base_url('cliente')
             . '</p></div>'
@@ -113,7 +113,7 @@ class Fo_api
 '
             .'<div style=" widt:80%; padding: 20px 0px;">'
             . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;display: inline-flex""> Olá <div style="color: #4682B4; font-weight: bold;display: inline-flex; "> &nbsp;'.$nome.'</div></p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px; display: inline-flex">Seu status de pedido foi alterado para <div style="color: #4682B4; font-weight: bold;display: inline-flex "> &nbsp '.$status.'.</div></p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px; display: inline-flex">Seu status de pedido foi alterado para <div style="color: #4682B4; font-weight: bold;display: inline-flex "> &nbsp; '.$status.'.</div></p>'
             . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Obrigado por escolher a GTX Sports.</p>'
             . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Acesse seu pedido em: </p>' . base_url('cliente')
             . '</p></div>'
@@ -121,7 +121,7 @@ class Fo_api
         $Data['to'] = $email;
         $Data['name'] = 'GTX';
         $Data['html'] = $msg;
-        $Data['subject'] = 'Alteração no status do pedido!';
+        $Data['subject'] = '!';
 
         $resp_email = Fo_email::from_system($Data);
 
