@@ -468,7 +468,7 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
                 '</div>'
             });
             $timeout(function () {
-                window.location.href = "/gtx/home/clientes";
+                // window.location.href = "/gtx/home/clientes";
             }, 2000);
         })
     }
