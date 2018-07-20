@@ -27,6 +27,17 @@ class Home extends CI_Controller {
         $this->load->view("cliente/login");
         $this->session->sess_destroy();
     }
+    public function pedidosCli()
+    {
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)){
+            $this->load->view("cliente/inc/header");
+            $this->load->view("cliente/pedidos");
+            $this->load->view("cliente/inc/footer");
+        }else{
+            redirect(base_url("cliente"));
+        }
+    }
     public  function dashboard(){
         $data = array(
             "selected" => 1

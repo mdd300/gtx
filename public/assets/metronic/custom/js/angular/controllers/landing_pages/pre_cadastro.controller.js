@@ -829,7 +829,7 @@ angular.module('app_landing').controller('loginCliente_ctrl', ['$scope', '$http'
                                 $scope.mensagem_erro = false;
                             }, 3000);
                         }else{
-                            window.location.href = base_url + "cliente/pedidos"
+                            window.location.href = base_url + "home/pedidosCli"
                         }
 
                     }
