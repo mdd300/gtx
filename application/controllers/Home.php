@@ -23,6 +23,10 @@ class Home extends CI_Controller {
 	    $this->load->view("gtx/login");
 
     }
+    public function cliente(){
+        $this->load->view("cliente/login");
+        $this->session->sess_destroy();
+    }
     public  function dashboard(){
         $data = array(
             "selected" => 1

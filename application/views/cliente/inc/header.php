@@ -96,7 +96,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="<?=base_url('cliente')?>">
+                            <a href="<?=base_url('home/cliente')?>">
                                 Logout
                             </a>
                         </li>
