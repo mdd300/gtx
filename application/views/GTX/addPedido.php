@@ -49,6 +49,13 @@
                                 </div>
                                 <div ng-repeat="camisa in produto.camisas">
                                     <hr style="width: 100%" ng-show="$index > 0"/>
+                                    <div ng-click="deleteCamisa($parent.$index, $index)"
+                                         style="position: relative;
+                                                    right: 20px;
+                                                    font-size: 2rem;
+                                                    float: right;
+                                                    cursor: pointer"
+                                    >X</div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Nome na Camisa</label>

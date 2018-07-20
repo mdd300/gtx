@@ -320,6 +320,10 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
         }
     ];
 
+    $scope.deleteCamisa = function (prod,cam) {
+        $scope.produtos[prod].camisas.splice(cam,1)
+    }
+
     $('body').on("change", "input[type=file]", function(){
         readURL(this);
     });
