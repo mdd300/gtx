@@ -853,7 +853,7 @@ angular.module('app_landing').controller('pedidosCliente_ctrl', ['$scope', '$htt
     $http({
 
         method: 'POST',
-        url: "/gtx/cliente/getPedidos",
+        url: "/gtx/home/getPedidosCli",
         headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
     }).then(function (response) {
