@@ -197,5 +197,75 @@ class Fo_login
         redirect(base_url());
 
     }
+    public static function do_login2(array $Data)
+    {
+
+        $CI = &get_instance();
+
+        $CI->load->library(['Keepbox/Fo_users']);
+
+        $Result = [ // Retorno padrão
+            'success' => false,
+            'type' => 'error',
+            'text' => "Usuário ou senha incorretos"
+        ];
+
+        $user_login = $Data['cliente_username'] ?? false; // Índice com o login do usuário, que pode ser o username ou e-mail
+        $user_pass = $Data['cliente_pass'] ?? false; // Senha do usuário
+
+        if ($user_login and $user_pass) {
+
+            $checkedUser = Fo_users::check_exists2($user_login);
+
+
+            if ($checkedUser) { // Se existe o usuário com o login especificado
+
+                $CI->db->select('*');
+                $CI->db->from('tb_cliente');
+                $CI->db->where('id_cliente', $checkedUser->id_cliente);
+
+                $userdata = $CI->db->get()->result()[0]; // Buscando novametne o usuário, porém agora trazendo todos os dados
+
+
+//                if ($userdata->user_status == ENABLED) { // Se o usuário está ativo
+
+
+                if (self::check_password($user_pass, $userdata->cliente_pass)) {
+
+                    $Result['success'] = true;
+                    $Result['type'] = 'success';
+                    $Result['text'] = "Login efetuado com sucesso!";
+                    $Result['user'] = $checkedUser->cliente_nome . $checkedUser->cliente_sobrenome;
+                    $Result['id'] = $checkedUser->id_cliente;
+
+                    $CI->session->set_userdata(self::$session_name, [
+                        'cliente_id' => $checkedUser->id_cliente
+                    ]);
+
+                } else {
+                    $Result['text'] = "Usuário ou senha incorretos!";
+                }
+
+//                } else { // Se não está ativo
+//                    $Result['success'] = false;
+//                    $Result['type'] = 'error';
+//                    $Result['text'] = "Usuário bloqueado, por favor entre em contato!";
+//                }
+
+            } else { // Se não existe
+                $Result['success'] = false;
+                $Result['type'] = 'error';
+                $Result['text'] = "E-mail ou usuário não cadastrado!";
+            }
+
+        } else { // Se não tem os índices necessários
+            $Result['success'] = false;
+            $Result['type'] = 'error';
+            $Result['text'] = "Por favor, confira o login e senha!";
+        }
+
+        return $Result;
+
+    }
 
 }

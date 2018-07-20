@@ -18,193 +18,77 @@ class Home extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
-	{
-        $data['selection'] = 1;
+	public function index(){
 
-
-        $this->load->view('Keep/structure/header_default', $data);
-        $this->load->view('Keep/Home/Home');
-        $this->load->view('Keep/structure/footer_default');
-    }
-    public function teste()
-    {
-        $this->load->view('email');
-    }
-
-    public function cadastroPage(){
-
-        $data['selection'] = 0;
-        $this->load->view('Keep/structure/header_default', $data);
-        $this->load->view('Keep/Cadastro/Cadastro_1_step');
-        $this->load->view('Keep/structure/footer_default');
+	    $this->load->view("gtx/login");
 
     }
-
-    public function duvidas(){
-
-        $data['selection'] = 4;
-
-
-        $this->load->view('Keep/structure/header_default', $data);
-        $this->load->view('Keep/Duvidas/Duvidas');
-        $this->load->view('Keep/structure/footer_default');
+    public  function dashboard(){
+        $data = array(
+            "selected" => 1
+        );
+        $this->load->view("gtx/inc/header", $data);
+        $this->load->view("gtx/dashboard");
+        $this->load->view("gtx/inc/footer");
 
     }
+    public  function clientes(){
 
-    public function servico(){
-
-        $data['selection'] = 2;
-
-
-        $this->load->view('Keep/structure/header_default', $data);
-        $this->load->view('Keep/Servicos/Servicos');
-        $this->load->view('Keep/structure/footer_default');
-
-    }
-
-    public function termos(){
-
-        $data['selection'] = 0;
-
-
-        $this->load->view('Keep/structure/header_default', $data);
-        $this->load->view('Keep/Servicos/Termos');
-        $this->load->view('Keep/structure/footer_default');
-
-    }
-
-    public function funcionamento(){
-
-        $data['selection'] = 3;
-
-        $this->load->view('Keep/structure/header_default', $data);
-        $this->load->view('Keep/Como_Funciona/Como_Funciona');
-        $this->load->view('Keep/structure/footer_default');
-
-    }
-
-    public function pre_cadastro($Data = null){
-
-        if ($Data == null) {
-            $Output = true;
-            $Data = $this->input->post();
-        } else {
-            $Output = false;
-        }
-
-        $this->load->model('landing/Landing_model');
-
-        $retorno['success'] = $this->Landing_model->pre_cad_email($Data);
-
-
-        if ($Output == true) {
-            echo json_encode($retorno);
-        } else {
-            return $retorno;
-        }
-
-    }
-
-    public function cadastro_email($Data = null){
-        if ($Data == null) {
-            $Output = true;
-            $Data = $this->input->post();
-        } else {
-            $Output = false;
-        }
-
-        $this->load->model('Home_model');
-
-        $retorno = $this->Home_model->Cadastro_model($Data['Data']);
-        if($retorno !== false){
-
-            $this->load->library('Fo_api');
-            if (Fo_api::sendEmail($Data['Data']['user_nome'],$Data['Data']['user_email'], $retorno['code'], $retorno['id']))
-                $retorno['success'] = true;
-        }
-            if ($Output == true) {
-                echo json_encode($retorno);
-            } else {
-                return $retorno;
-            }
-
-    }
-
-
-    public function cadastroFinal()
-    {
-        $data['selection'] = 0;
-        $this->load->view('Keep/structure/header_default', $data);
-        $this->load->view('Keep/Cadastro/Cadastro_1_step');
-        $this->load->view('Keep/structure/footer_default');
-
-    }
-    public function cadastroFinalizar($Data = null)
-    {
-
-        if ($Data == null) {
-            $Output = true;
-            $Data = $this->input->post();
-        } else {
-            $Output = false;
-        }
-
-        $this->load->model('Home_model');
-
-        $retorno = $this->Home_model->Cadastro_final_model($Data['id'],$Data['Data']);
-
-        if ($Output == true) {
-            echo json_encode($retorno);
-        } else {
-            return $retorno;
-        }
-
-    }
-
-    public function Login($Data = null)
-    {
-
-        if ($Data == null) {
-            $Output = true;
-            $Data = $this->input->post();
-        } else {
-            $Output = false;
-        }
-
-        $this->load->library('Keepbox/Fo_login');
-
-        $retorno = Fo_login::do_login($Data);
-
-        if ($Output == true) {
-            echo json_encode($retorno);
-        } else {
-            return $retorno;
-        }
-
-    }
-    public function verifySession($Data = null){
-        if ($Data == null) {
-            $Output = true;
-            $Data = $this->input->post();
-        } else {
-            $Output = false;
-        }
-
-        if(isset($_SESSION['fashon_session']['user_id'])){
-            $retorno['success'] = true;
+	    $data = array(
+	        "selected" => 2
+        );
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $this->load->view("gtx/inc/header", $data);
+            $this->load->view("gtx/clientes");
+            $this->load->view("gtx/inc/footer");
         }else{
-            $retorno['success'] = false;
-        }
-
-        if ($Output == true) {
-            echo json_encode($retorno);
-        } else {
-            return $retorno;
+            redirect(base_url());
         }
     }
+    public  function pedidos(){
 
-    public function changePass($Data = null){
+        $data = array(
+            "selected" => 3
+        );
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $this->load->view("gtx/inc/header", $data);
+            $this->load->view("gtx/pedidos");
+            $this->load->view("gtx/inc/footer");
+        }else{
+            redirect(base_url());
+        }
+    }
+    public  function addPedido(){
+
+        $data = array(
+            "selected" => 2
+        );
+
+        $this->load->model("Home_model");
+        $retorno['cliente'] = $this->Home_model->getCliente_model($_GET['id'])[0];
+        $retorno["id"] = $_GET['id'];
+
+        $this->load->view("gtx/inc/header", $data);
+        $this->load->view("gtx/addPedido",$retorno);
+        $this->load->view("gtx/inc/footer");
+
+    }
+    public function updateCliente(){
+
+        $data = array(
+            "selected" => 2,
+            "id" => $_GET['id']
+        );
+
+        $this->load->view("gtx/inc/header", $data);
+        $this->load->view("gtx/updateCliente",$data);
+        $this->load->view("gtx/inc/footer");
+
+    }
+
+    public function getClienteWhere($Data = null){
         if ($Data == null) {
             $Output = true;
             $Data = $this->input->post();
@@ -212,7 +96,8 @@ class Home extends CI_Controller {
             $Output = false;
         }
 
-
+        $this->load->model("Home_model");
+        $retorno = $this->Home_model->getCliente_model($Data["id"])[0];
 
         if ($Output == true) {
             echo json_encode($retorno);
@@ -221,5 +106,74 @@ class Home extends CI_Controller {
         }
     }
 
+    public  function AddCliente(){
+
+        $data = array(
+            "selected" => 2
+        );
+
+        $this->load->view("gtx/inc/header", $data);
+        $this->load->view("gtx/addCliente");
+        $this->load->view("gtx/inc/footer");
+
+    }
+
+    public function setCliente($Data = null){
+        if ($Data == null) {
+            $Output = true;
+            $Data = $this->input->post();
+        } else {
+            $Output = false;
+        }
+
+        $this->load->model("Home_model");
+        $retorno = $this->Home_model->setCliente_model($Data);
+
+        $this->load->library('Fo_api');
+        Fo_api::sendEmail($Data['cliente_nome']. " ". $Data['cliente_sobrenome'], $Data["cliente_email"], $Data["cliente_username"]);
+
+        if ($Output == true) {
+            echo json_encode($retorno);
+        } else {
+            return $retorno;
+        }
+    }
+
+    public function setUpdateCliente($Data = null){
+        if ($Data == null) {
+            $Output = true;
+            $Data = $this->input->post();
+        } else {
+            $Output = false;
+        }
+
+        $this->load->model("Home_model");
+        $retorno = $this->Home_model->setUpdateCliente_model($Data["data"], $Data["id"]);
+
+        if ($Output == true) {
+            echo json_encode($retorno);
+        } else {
+            return $retorno;
+        }
+    }
+
+    public function getClientes($Data = null){
+        if ($Data == null) {
+            $Output = true;
+            $Data = $this->input->post();
+        } else {
+            $Output = false;
+        }
+
+        $this->load->model("Home_model");
+        $retorno = $this->Home_model->getCliente_model();
+
+
+        if ($Output == true) {
+            echo json_encode($retorno);
+        } else {
+            return $retorno;
+        }
+    }
 
 }

@@ -26,17 +26,21 @@ class Login extends CI_Controller {
 
     }
 
-    public function do_login2 () {
+    public function do_login2 ($post = null) {
 
         $this->load->library(['Keepbox/fo_login']);
 
-        $post = $this->input->post();
+        if ($post == null) {
+            $Output = true;
+            $post = $this->input->post();
+        } else {
+            $Output = false;
+        }
 
         $Response = Fo_login::do_login2($post);
 
         $this->output->set_content_type('application/json');
         $this->output->set_output(json_encode($Response));
-
     }
 
 }

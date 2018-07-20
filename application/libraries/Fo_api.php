@@ -54,7 +54,7 @@ class Fo_api
 
 
     //envia email com code para o usuario
-    public static function sendEmail($nome,$email, $code, $id)
+    public static function sendEmail($nome,$email, $user)
     {
         $CI = &get_instance();
 
@@ -62,7 +62,7 @@ class Fo_api
 
 
         $msg = '<div style="width: 800px">
-<img style="margin-left: 160px; height: 125px; width: 250px" src="'.base_url("public/assets/metronic/custom/img/LOGOTIPO.png").'">
+<img style="margin-left: 160px; height: 125px; width: 250px" src="https://gtxsports.com.br/wp-content/uploads/2017/07/gtxSports_blk.png">
 
     <div style="
      padding: 30px 0px;
@@ -71,39 +71,57 @@ class Fo_api
     width: 100%;
     margin-left: 120px;
     height: auto;
-    color: #a9d046;
+    color: #4682B4;
     font-family:Multicolore;">
         Seja bem vindo
     </div>
-    <img height="290" width="600" style="margin-left 100px; border-radius: 20px" src="'.base_url("public/assets/metronic/custom/img/photo/banner_email.jpg").'">
+    <img height="290" width="600" style="margin-left 100px; border-radius: 20px" src="https://gtxsports.com.br/wp-content/uploads/2017/07/slide_20estados.jpg">
 '
             .'<div style=" widt:80%; padding: 20px 0px;">'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;display: inline-flex""> Olá <div style="color: #a9d046; font-weight: bold;display: inline-flex; "> &nbsp;'.$nome.'</div></p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px; display: inline-flex">Seja bem vindo a <div style="color: #a9d046; font-weight: bold;display: inline-flex "> &nbsp;KEEPBOX</div></p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Nossa equipe recebeu seu cadastro e veio entregar as chaves</p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> para seu novo endereço  nos EUA. Confira abaixo e não se</p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;">esqueça de ativar sua conta</p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;display: inline-flex""> Olá <div style="color: #4682B4; font-weight: bold;display: inline-flex; "> &nbsp;'.$nome.'</div></p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px; display: inline-flex">Seja bem vindo a <div style="color: #4682B4; font-weight: bold;display: inline-flex "> &nbsp GTX</div></p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Seu usuário foi cadastrado em nosso sistema,</p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> logo seu pedido estará disponivel para acesso em: </p>' . base_url('cliente')
             . '</p></div>'
-            . '<p style="color:#696969;    padding: 0px 20px 20px 0px;font-weight: bold;font-size:20px;font-family:Multicolore;margin:0px;"><b>Seu endereço é:</b></p>	'
+            . '<p style="color:#696969;    padding: 0px 20px 20px 0px;font-weight: bold;font-size:20px;font-family:Multicolore;margin:0px;"><b>Seu acesso:</b></p>	'
             . '<div style=" display: flex; justify-content: center; width: 100%; height: auto">'
             .'<div style=" width:550px; background-color:#e1efbc;border-radius: 10px; padding: 20px;">'
-            . '<p style="color:#696969;font-size:20px;font-family:Multicolore;margin:0px;">'
-
-            .'</p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;">'
-            . $code
-            .'</p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Street: 591 Lakeview Drive</p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> City: Coral Springs</p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> State: Florida (FL)</p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Zip Code: 33071 </p>'
-            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;">Para acessar sua conta, finalize seu cadastro clicando aqui:</p>'
-            . '<a href="'.base_url("Home/cadastroFinal?id=").$id .'">' .base_url('Home/cadastroFinal?id=').$id. ' </a> '
-            . '</p></div></div></div>';
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"><b>Usuário:</b> ' . $user . ' ou seu E-mail </p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"><b>Senha: </b> Seu nome e sobrenome (sem espaço e sem letras maiusculas )</p>'
+            .'</div></div></div>';
         $Data['to'] = $email;
-        $Data['name'] = 'QRGO';
+        $Data['name'] = 'GTX';
         $Data['html'] = $msg;
-        $Data['subject'] = 'Parabéns, você já pode fazer suas compras!';
+        $Data['subject'] = 'Parabéns, você foi cadastrado em nosso sistema!';
+
+        $resp_email = Fo_email::from_system($Data);
+
+    }
+
+    public static function sendEmailStatus($nome,$email,$status)
+    {
+        $CI = &get_instance();
+
+        $CI->load->library(['Fo_email']);
+
+
+        $msg = '<div style="width: 800px">
+<img style="margin-left: 160px; height: 125px; width: 250px" src="https://gtxsports.com.br/wp-content/uploads/2017/07/gtxSports_blk.png">
+
+   
+    <img height="290" width="600" style="margin-left 100px; border-radius: 20px" src="https://gtxsports.com.br/wp-content/uploads/2017/07/slide_20estados.jpg">
+'
+            .'<div style=" widt:80%; padding: 20px 0px;">'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;display: inline-flex""> Olá <div style="color: #4682B4; font-weight: bold;display: inline-flex; "> &nbsp;'.$nome.'</div></p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px; display: inline-flex">Seu status de pedido foi alterado para <div style="color: #4682B4; font-weight: bold;display: inline-flex "> &nbsp '.$status.'.</div></p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Obrigado por escolher a GTX Sports.</p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Acesse seu pedido em: </p>' . base_url('cliente')
+            . '</p></div>'
+            .'</div>';
+        $Data['to'] = $email;
+        $Data['name'] = 'GTX';
+        $Data['html'] = $msg;
+        $Data['subject'] = 'Alteração no status do pedido!';
 
         $resp_email = Fo_email::from_system($Data);
 

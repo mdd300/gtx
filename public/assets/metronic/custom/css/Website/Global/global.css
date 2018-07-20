@@ -14,42 +14,6 @@ a {
 .text-font-sans{
     font-family: Circe;
 }
-.text-1-sm{
-    font-size: 1.5em;
-    line-height: 27px;
-    font-family: Circe;
-}
-.text-1{
-    font-size: 1.9em;
-    line-height: 40px;
-    font-family: Circe;
-
-}
-.text-2{
-    font-size: 2.8em;
-    line-height: 40px;
-    font-family: Circe;
-
-}
-.text-title-sm{
-    font-size: 2rem;
-    line-height: 80px;
-    font-family: Circe;
-
-}
-.text-title-md{
-    font-size: 2.5rem;
-    line-height: 60px;
-}
-.text-title{
-    font-size: 3.13rem;
-    line-height: 60px;
-    font-family: Circe;
-}
-.text-title-xl{
-    font-size: 3.8rem;
-    line-height: 80px;
-}
 .text-bold{
     font-weight: bold;
 }
@@ -271,6 +235,53 @@ a {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+
+@media screen and (min-width: 800px) {
+
+    .text-1-sm {
+        font-size: 1.5em;
+        line-height: 27px;
+        font-family: Circe;
+    }
+
+    .text-1 {
+        font-size: 1.9em;
+        line-height: 40px;
+        font-family: Circe;
+
+    }
+
+    .text-2 {
+        font-size: 2.8em;
+        line-height: 40px;
+        font-family: Circe;
+
+    }
+
+    .text-title-sm {
+        font-size: 2rem;
+        line-height: 80px;
+        font-family: Circe;
+
+    }
+
+    .text-title-md {
+        font-size: 2.5rem;
+        line-height: 60px;
+    }
+
+    .text-title {
+        font-size: 3.13em;
+        line-height: 60px;
+        font-family: Circe;
+    }
+
+    .text-title-xl {
+        font-size: 3.8em;
+        line-height: 80px;
+    }
 }
 /*@media screen and (max-width: 2000px) {*/
 /*.width_padrao {*/

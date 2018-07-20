@@ -88,3 +88,9 @@ defined('PROD_IMG')      OR define('PROD_IMG', 'upload/produtos/img/'); // image
 
 defined('ENABLED')      OR define('ENABLED', 1); // Ativado
 defined('DISABLED')      OR define('DISABLED', 0); // Desativado
+
+defined('AGUARDANDO')      OR define('AGUARDANDO', "Aguardando "); // Desativado
+defined('PROCESSO')      OR define('PROCESSO', "Em processo"); // Desativado
+defined('PRONTO')      OR define('PRONTO', "Pronto"); // Desativado
+defined('PAGO')      OR define('PAGO', "Pago"); // Desativado
+defined('CANCELADO')      OR define('CANCELADO', "Cancelado"); // Desativado

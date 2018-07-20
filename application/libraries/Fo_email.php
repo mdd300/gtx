@@ -39,14 +39,14 @@ class Fo_email
                 $mail->isSMTP();                                      // Set mailer to use SMTP
                 $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
                 $mail->SMTPAuth = true;                               // Enable SMTP authentication
-                $mail->Username = 'keepboxbr@gmail.com';                 // SMTP username
-                $mail->Password = 'Keep70site';                           // SMTP password
+                $mail->Username = 'victor.za.oshiro5@gmail.com';                 // SMTP username
+                $mail->Password = '89720228';                           // SMTP password
                 $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 465;                                    // TCP port to connect to
                 $mail->CharSet = 'UTF-8';
-                $mail->setFrom('keepboxbr@gmail.com', 'Keepbox');
+                $mail->setFrom('victor.za.oshiro5@gmail.com', 'GTX');
                 $mail->addAddress($to, $name);     // Add a recipient
-                $mail->addReplyTo('keepboxbr@gmail.com', 'Keepbox');
+                $mail->addReplyTo('victor.za.oshiro5@gmail.com', 'GTX');
 
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = $subject;

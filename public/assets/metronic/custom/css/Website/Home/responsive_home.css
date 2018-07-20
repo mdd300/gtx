@@ -11,12 +11,6 @@
         list-style-type: none;
 
     }
-    .content-align-menu{
-        width: 90%;
-    }
-}
-
-@media screen and (max-width: 600px) {
     .topnav.responsive {position: relative;height: 60px;}
     .topnav.responsive .icon-responsive {
         position: absolute !important;
@@ -32,6 +26,169 @@
     .responsive-line{
         display: none;
     }
+    .content-align-menu{
+        width: 90%;
+    }
+    .content-logo-header {
+        float: left;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 23%;
+        height: 64%;
+        margin-top: 14px;
+        margin-left: 40px;
+    }
+
+    .text-1-sm{
+        font-size: 0.8em;
+        line-height: 27px;
+        font-family: Circe;
+    }
+    .text-1{
+        font-size: 1.4em;
+        line-height: 40px;
+        font-family: Circe;
+
+    }
+    .text-2{
+        font-size: 1.6em;
+        line-height: 40px;
+        font-family: Circe;
+
+    }
+
+    .text-title{
+        font-size: 1.8em;
+        line-height: 60px;
+        font-family: Circe;
+    }
+    .text-title-xl{
+        font-size: 2.4em;
+        line-height: 80px;
+    }
+
+    .header-li a {
+        display: flex;
+        color: #878889;
+        text-align: center;
+        padding: 14px 10px;
+        text-decoration: none !important;
+        font-family: sans-serif;
+        float: right;
+        justify-content: center;
+        align-items: center;
+        width: 43%;
+    }
+    .content-btn-header-menu {
+        float: right;
+        padding: 11px 0px;
+    }
+    .content-header-menu {
+        height: 64px;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 14px 46px -10px rgba(0, 0, 0, 0.3);
+    }
+    .content-text-banner {
+        /* padding: 8% 20%; */
+        padding-top: 33%;
+        height: auto;
+        display: flex;
+        justify-content: center;
+    }
+    .content-more-about-text {
+        position: absolute;
+        background-color: white;
+        padding: 10% 15% 0 15%;
+        border-radius: 30px;
+        width: 66%;
+        /* min-width: 676px; */
+        height: auto;
+        box-shadow: 0px 14px 46px -10px rgba(0, 0, 0, 0.3);
+        margin: 13% 2% 0px 2%;
+    }
+    .content-video-module2 {
+        position: absolute;
+        border-radius: 30px;
+        width: 96%;
+        height: 50%;
+        float: right;
+        /* right: 0; */
+        /* top: 0; */
+        margin-right: 5%;
+        margin-left: 2%;
+        margin-top: 165%;
+        box-shadow: 0px 14px 46px -10px rgba(0, 0, 0, 0.3);
+    }
+    .content-text-module2 {
+        position: absolute;
+        float: left;
+        margin-top: 227%;
+        margin-left: 5%;
+        /* height: 117px; */
+        width: 336px;
+    }
+    .content-module-2 {
+        height: 1552px;
+        position: absolute;
+        margin-top: 200px;
+    }
+    .content-cadastro-space-modulo2 {
+        width: 100%;
+        height: 1751px;
+        /* background-color: red; */
+        position: relative;
+        z-index: -11;
+    }
+    .ul-step-module2 {
+        position: absolute;
+        display: table;
+        float: left;
+        margin-top: 260%;
+        /* margin-left: 210px; */
+        width: auto;
+        height: 300px;
+        list-style-type: none !important;
+        justify-content: center;
+    }
+    .li-step-module2 {
+        text-decoration: none !important;
+        width: 45%;
+        height: 280px;
+        display: block !important;
+        color: #878889;
+        text-align: center;
+        padding: 11px 7px;
+        font-family: sans-serif;
+        float: left;
+    }
+    .step-text {
+        padding-top: 5%;
+    }
+    .step-icon {
+        width: 100%;
+        height: 29%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        padding: 0px;
+        margin-top: 25px;
+        background-position: center;
+    }
+    .content-text-cadastro-module3 {
+        padding-left: 5%;
+        padding-top: 40px;
+        padding-bottom: 10px;
+        /* width: 88%; */
+    }
+    .limit-text-cadastro {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+
 }
 .icon-responsive {
     display: none;
