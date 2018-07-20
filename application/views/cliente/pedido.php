@@ -23,6 +23,12 @@
                                         <input name="cliente_email" disabled type="email" class="form-control" placeholder="Email" value="{{pedido.cliente_email}}">
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label  for="exampleInputEmail1">Status do pedido: </label>
+                                        <span style="color: green;" ng-class="{'error-text': pedido.pedido_status == 'Cancelado', 'processo-text': pedido.pedido_status == 'Em processo'}">{{pedido.pedido_status}}</span>
+                                    </div>
+                                </div>
                             </div>
                             <div ng-repeat="produto in pedido.produtos">
                                 <hr style="width: 100%" ng-show="$index > 0"/>
