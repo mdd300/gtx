@@ -5,7 +5,7 @@ class Login extends CI_Controller {
 
     public function index()
     {
-        $this->load->view('metronic/login/login');
+        $this->load->view('GTX/login');
     }
 
     public function do_login ($post = null) {
