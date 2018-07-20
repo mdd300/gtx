@@ -68,7 +68,7 @@
 <!--                    </a>-->
 <!--                </li>-->
                 <li class="active">
-                    <a href="<?=base_url()?>cliente/pedidos">
+                    <a href="<?=base_url()?>home/pedidosCli">
                         <i class="pe-7s-note2"></i>
                         <p>Pedidos</p>
                     </a>
