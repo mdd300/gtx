@@ -23,6 +23,18 @@
                                         <input name="cliente_email" disabled type="email" class="form-control" placeholder="Email" value="{{pedido.cliente_email}}">
                                     </div>
                                 </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Valor do frete</label>
+                                            <input name="cliente_username" id="frete" type="text" class="form-control" placeholder="Valor do frete" ng-model="pedido.pedido_frete">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label >desconto</label>
+                                            <input name="cliente_email" id="desconto" type="text" class="form-control" placeholder="Desconto" ng-model="pedido.pedido_desconto">
+                                        </div>
+                                    </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label  for="exampleInputEmail1">Status do pedido: </label>
@@ -49,22 +61,34 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Produto {{$index + 1}}</label>
-                                            <input name="produto_nome" ng-model="produto.produto_nome" type="text" class="form-control" placeholder="Nome do produto" >
+                                            <label>Produto</label>
+                                            <input disabled name="produto" index-prod="{{$index}}" id="tags" value="{{produto.produto_nome}}" type="text" class="form-control" placeholder="Nome do produto">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Preço</label>
+                                                <input name="produto" disabled  type="text" class="form-control" value="{{produto.produto_preco}}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row" ng-repeat="var in produto.variantes_produto">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Preço unitário</label>
-                                            <input name="produto_unidade" ng-model="produto.produto_unidade" type="text" class="form-control" placeholder="Preço unitário" >
+                                            <label>{{var.variante_index}}</label>
+                                            <input disabled type="text" class="form-control" value="{{var.variante_value}}">
                                         </div>
                                     </div>
+
+                                </div>
                                     <div class="row">
                                         <div class="col-md-12" style="margin-left: 2px">
-                                            <h3>Camisas</h3>
+                                            <h3>Unidades</h3>
                                         </div>
                                     </div>
                                     <div ng-repeat="camisa in produto.camisas">
@@ -79,7 +103,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Nome na Camisa</label>
-                                                <input name="camisa_nome" ng-model="camisa.camisa_nome" type="text" class="form-control" placeholder="Nome na camisa" >
+                                                <input name="camisa_nome" ng-model="camisa.camisa_nome" type="text" class="form-control" placeholder="Nome" >
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -101,7 +125,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <label>Comentários ( Sobre a camisa )</label>
+                                            <label>Comentários ( Sobre a unidade )</label>
                                             <div class="form-group">
                                                 <textarea class="form-control" id="textarea" name="camisa_comentario" ng-model="camisa.camisa_comentario"></textarea>
                                             </div>
@@ -194,7 +218,7 @@
                             <button class="btn btn-info btn-fill pull-right" ng-click="updatePedido()"
                                     style="text-align: center;
                                     display: flex;
-                                    align-items: center;" >
+                                    align-items: center;margin: 10px" >
                                 <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
                                     <div class="loader-all" id="loader-1"></div>
                                 </div>Salvar
@@ -209,3 +233,38 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    var mask = {
+        money: function() {
+            var el = this
+                ,exec = function(v) {
+                v = v.replace(/\D/g,"");
+                v = new String(Number(v));
+                var len = v.length;
+                if (1== len)
+                    v = v.replace(/(\d)/,"0,0$1");
+                else if (2 == len)
+                    v = v.replace(/(\d)/,"0,$1");
+                else if (len > 2) {
+                    v = v.replace(/(\d{2})$/,',$1');
+                }
+                return v;
+            };
+
+            setTimeout(function(){
+                el.value = exec(el.value);
+            },1);
+        }
+
+    }
+
+    $(function(){
+        $('#frete').bind('keypress',mask.money)
+    });
+
+    $(function(){
+        $('#desconto').bind('keypress',mask.money)
+    });
+</script>

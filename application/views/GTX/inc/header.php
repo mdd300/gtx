@@ -87,6 +87,16 @@
                         <p>Pedidos</p>
                     </a>
                 </li>
+                <?php if($selected == 4){?>
+                <li class="active">
+                    <?php }else{?>
+                <li >
+                    <?php }?>
+                    <a href="<?=base_url()?>home/produtos">
+                        <i class="pe-7s-shopbag"></i>
+                        <p>Produtos</p>
+                    </a>
+                </li>
 
             </ul>
         </div>

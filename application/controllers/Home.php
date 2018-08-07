@@ -104,6 +104,34 @@ class Home extends CI_Controller {
             redirect(base_url());
         }
     }
+    public  function produtos(){
+
+        $data = array(
+            "selected" => 4
+        );
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $this->load->view("gtx/inc/header", $data);
+            $this->load->view("gtx/produtos");
+            $this->load->view("gtx/inc/footer");
+        }else{
+            redirect(base_url());
+        }
+    }
+    public  function addProduto(){
+
+        $data = array(
+            "selected" => 4
+        );
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $this->load->view("gtx/inc/header", $data);
+            $this->load->view("gtx/addProduto");
+            $this->load->view("gtx/inc/footer");
+        }else{
+            redirect(base_url());
+        }
+    }
     public  function addPedido(){
 
         $data = array(
@@ -219,5 +247,6 @@ class Home extends CI_Controller {
             return $retorno;
         }
     }
+
 
 }

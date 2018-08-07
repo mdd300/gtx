@@ -23,6 +23,18 @@
                                         <input name="cliente_email" disabled type="email" class="form-control" placeholder="Email" value="{{pedido.cliente_email}}">
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Valor do frete</label>
+                                        <input disabled id="frete" type="text" class="form-control" placeholder="Valor do frete" value="{{pedido.pedido_frete}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label >desconto</label>
+                                        <input disabled id="desconto" type="text" class="form-control" placeholder="Desconto" value="{{pedido.pedido_desconto}}">
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label  for="exampleInputEmail1">Status do pedido: </label>
@@ -36,22 +48,33 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Produto {{$index + 1}}</label>
-                                            <input name="produto_nome" disabled ng-model="produto.produto_nome" type="text" class="form-control" placeholder="Nome do produto" >
+                                            <label>Produto</label>
+                                            <input disabled name="produto" index-prod="{{$index}}" id="tags" value="{{produto.produto_nome}}" type="text" class="form-control" placeholder="Nome do produto">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Preço</label>
+                                                <input name="produto" disabled  type="text" class="form-control" value="{{produto.produto_preco}}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row" ng-repeat="var in produto.variantes_produto">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Preço unitário</label>
-                                            <input name="produto_unidade" disabled ng-model="produto.produto_unidade" type="text" class="form-control" placeholder="Preço unitário" >
+                                            <label>{{var.variante_index}}</label>
+                                            <input disabled type="text" class="form-control" value="{{var.variante_value}}">
                                         </div>
                                     </div>
+                                </div>
                                     <div class="row">
                                         <div class="col-md-12" style="margin-left: 2px">
-                                            <h3>Camisas</h3>
+                                            <h3>Unidades</h3>
                                         </div>
                                     </div>
                                     <div ng-repeat="camisa in produto.camisas">
@@ -65,7 +88,7 @@
                                         >X</div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Nome na Camisa</label>
+                                                <label for="exampleInputEmail1">Nome</label>
                                                 <input name="camisa_nome" ng-model="camisa.camisa_nome" type="text" class="form-control" placeholder="Nome na camisa" >
                                             </div>
                                         </div>
@@ -88,7 +111,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <label>Comentários ( Sobre a camisa )</label>
+                                            <label>Comentários ( Sobre a unidade )</label>
                                             <div class="form-group">
                                                 <textarea class="form-control" id="textarea" name="camisa_comentario" ng-model="camisa.camisa_comentario"></textarea>
                                             </div>
@@ -149,7 +172,6 @@
                                                     <input class="parent-index-img" ng-value="$parent.$index" style="display: none">
                                                     <input class="index-img" ng-value="$index" style="display: none">
                                                     <img style="width: 100%; height: 100%" id="img-element" src="<?= base_url('upload/produtos/img/' )?>{{img.src}}">
-                                                    <div ng-click="deleteImgs(img.img_id,$parent.$index,$index)" style="position: absolute; top: 10px; right: 20px;color: blue; font-size: 3rem">X</div>
                                                 </label>
 
                                             </div>

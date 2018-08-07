@@ -104,6 +104,15 @@ angular.module('app_landing').controller('addCliente_ctrl', ['$scope', '$http','
 
     }
 
+    var options = {
+        onKeyPress: function (cpf, ev, el, op) {
+            var masks = ['000.000.000-000', '00.000.000/0000-00'];
+            $('.cpfOuCnpj').mask((cpf.length > 14) ? masks[1] : masks[0], op);
+        }
+    }
+
+    $('#cpfcnpj').mask('000.000.000-000', options);
+
 
         $scope.setCliente = function () {
 
@@ -191,6 +200,16 @@ angular.module('app_landing').controller('addCliente_ctrl', ['$scope', '$http','
 
 }]);
 angular.module('app_landing').controller('updateCliente_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
+
+    var options = {
+        onKeyPress: function (cpf, ev, el, op) {
+            var masks = ['000.000.000-000', '00.000.000/0000-00'];
+            $('.cpfOuCnpj').mask((cpf.length > 14) ? masks[1] : masks[0], op);
+        }
+    }
+
+    $('#cpfcnpj').mask('000.000.000-000', options);
+
 
     $scope.loader_send = false;
 
@@ -300,11 +319,17 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
 
     $scope.loader_send = false;
 
+    $scope.dataPedido = {
+        "pedido_frete": "",
+        "pedido_desconto": ""
+    }
+
     $scope.produtos = [
         {
             "produto_nome": "",
             "produto_unidade": "",
             "produto_comentario": "",
+            "variantes_produto": [],
             "imgs": [{
                 "src": ""
             }
@@ -319,6 +344,54 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             ],
         }
     ];
+
+    $scope.tags;
+
+    $(function() {
+
+        $http({
+
+            method: 'POST',
+            url: "/gtx/produto/getProdutosNames",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+            $scope.tags = response.data;
+
+            $("#tags-0" ).autocomplete({
+                source: $scope.tags
+            });
+
+            $("#tags-0").autocomplete({
+                select: function( event, ui ) {
+
+                    var targ = event.target
+
+                    $scope.produtos[targ.getAttribute("index-prod")].produto_nome = ui.item.value;
+
+                    $http({
+
+                        method: 'POST',
+                        url: "/gtx/produto/getVariantes",
+                        data: $.param({data: ui.item.value}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+                    }).then(function (response) {
+
+
+                        $scope.produtos[targ.getAttribute("index-prod")].variantes_produto = response.data.produto_variantes;
+                        $scope.produtos[targ.getAttribute("index-prod")].produto_preco = response.data.produto_preco
+                        console.log($scope.produtos[targ.getAttribute("index-prod")])
+
+                    })
+                }
+            });
+        })
+
+
+    });
+
 
     $scope.deleteCamisa = function (prod,cam) {
         $scope.produtos[prod].camisas.splice(cam,1)
@@ -394,6 +467,39 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             }
             ]
         })
+        $timeout(function () {
+
+        $(function() {
+
+
+            $("#tags-"+ (parseInt($scope.produtos.length) - 1) ).autocomplete({
+            source: $scope.tags
+        });
+
+        $("#tags-"+(parseInt($scope.produtos.length) - 1)).autocomplete({
+            select: function( event, ui ) {
+
+                var targ = event.target
+
+                $scope.produtos[targ.getAttribute("index-prod")].produto_nome = ui.item.value;
+
+                $http({
+
+                    method: 'POST',
+                    url: "/gtx/produto/getVariantes",
+                    data: $.param({data: ui.item.value}),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+                }).then(function (response) {
+
+                    $scope.produtos[targ.getAttribute("index-prod")].variantes_produto = response.data;
+
+                })
+            }
+        });
+        });
+        },100);
+
     }
     $scope.addMoreCamisas = function (id) {
         $scope.produtos[id].camisas.push({
@@ -415,7 +521,7 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
 
                 method: 'POST',
                 url: "/gtx/pedido/setPedido",
-                data: $.param({produtos: $scope.produtos, id: $(".id-cliente").val()}),
+                data: $.param({produtos: $scope.produtos, id: $(".id-cliente").val(), variantes: $scope.dataProduto, pedido:$scope.dataPedido}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
             }).then(function (response) {
@@ -867,5 +973,187 @@ angular.module('app_landing').controller('pedidosCliente_ctrl', ['$scope', '$htt
     })
 
 
+}]);
+angular.module('app_landing').controller('produtos_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
+
+    $scope.produtos = [];
+
+
+    $http({
+
+        method: 'POST',
+        url: "/gtx/produto/getProdutos",
+        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+    }).then(function (response) {
+
+        $scope.produtos = response.data;
+        $timeout(function () {
+            $('#produtoTable').DataTable();
+        }, 500);
+    })
+
+
+}]);
+angular.module('app_landing').controller('addProduto_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
+
+    $scope.produto = {
+        "produto_nome": "" ,
+        "produto_preco": "",
+        "produto_comentario": "",
+        "produto_tipo": "",
+        "produto_variantes": [{
+            "variante_nome": "",
+            "variante_tipo": "",
+            "opcoes": [{
+                "opcao_nome": "",
+                "opcao_preco": ""
+            }]
+        }]
+    };
+    $scope.loader_send = false;
+
+    $scope.addMoreVar = function () {
+
+        $scope.produto.produto_variantes.push({
+            "variante_nome": "",
+            "opcoes": [{
+                "opcao_nome": "",
+                "opcao_preco": ""
+            }]
+        })
+
+
+        $(function(){
+            $('.preco-op-' + (parseInt($scope.produto.produto_variantes.length) - 1) + "-" + (parseInt($scope.produto.produto_variantes[(parseInt($scope.produto.produto_variantes.length) - 1)].opcoes.length) - 1)).bind('keypress',mask.money);
+        });
+
+    }
+    $scope.addMoreOp = function (id) {
+
+        $scope.produto.produto_variantes[id].opcoes.push(
+            {
+                "opcao_nome": "",
+                "opcao_preco": ""
+            }
+        )
+
+
+        $(function(){
+
+            $('.preco-op-' + id + "-" + (parseInt($scope.produto.produto_variantes[id].opcoes.length) - 1)).bind('keypress',mask.money);
+        });
+
+
+    }
+    $scope.deleteVar = function (id) {
+
+        $scope.produto.produto_variantes.splice(id,1);
+
+    }
+
+    $scope.setProduto = function () {
+
+
+        if ($scope.produto.produto_nome) {
+
+            $scope.loader_send = true;
+
+            $http({
+
+                method: 'POST',
+                url: "/gtx/produto/setProdutos",
+                data: $.param($scope.produto),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+            }).then(function (response) {
+
+                $scope.loader_send = false;
+
+                $.notify({
+                    // options
+                    icon: '',
+                    title: 'O produto foi cadastrado com sucesso',
+                    url: 'https://github.com/mouse0270/bootstrap-notify',
+                    target: '_blank'
+                }, {
+                    // settings
+                    element: 'body',
+                    position: null,
+                    type: "success",
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    showProgressbar: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: null,
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutUp'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class',
+                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                    '<span data-notify="icon"></span> ' +
+                    '<span data-notify="title">{1}</span> ' +
+                    '<span data-notify="message">{2}</span>' +
+                    '<div class="progress" data-notify="progressbar">' +
+                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                    '</div>' +
+                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                    '</div>'
+                });
+
+                $timeout(function () {
+                    window.location.href = "produtos";
+                }, 2000);
+
+            })
+        }
+    }
+
+var mask = {
+    money: function() {
+        var el = this
+            ,exec = function(v) {
+            v = v.replace(/\D/g,"");
+            v = new String(Number(v));
+            var len = v.length;
+            if (1== len)
+                v = v.replace(/(\d)/,"0,0$1");
+            else if (2 == len)
+                v = v.replace(/(\d)/,"0,$1");
+            else if (len > 2) {
+                v = v.replace(/(\d{2})$/,',$1');
+            }
+            return v;
+        };
+
+        setTimeout(function(){
+            el.value = exec(el.value);
+        },1);
+    }
+
+}
+
+$(function(){
+    $('.input-preco').bind('keypress',mask.money)
+});
+
+    $(function(){
+        $('.input-preco-op').bind('keypress',mask.money)
+    });
 }]);
 

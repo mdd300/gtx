@@ -1,10 +1,13 @@
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <div class="content" ng-controller="addPedido_ctrl">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Adicionar Usuário</h4>
+                        <h4 class="title">Adicionar Pedido</h4>
                     </div>
                     <div class="content">
                         <form>
@@ -23,28 +26,70 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Valor do frete</label>
+                                        <input name="cliente_username" id="frete" type="text" class="form-control" placeholder="Valor do frete" ng-model="dataPedido.pedido_frete">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label >desconto</label>
+                                        <input name="cliente_email" id="desconto" type="text" class="form-control" placeholder="Desconto" ng-model="dataPedido.pedido_desconto">
+                                    </div>
+                                </div>
+                            </div>
                         <div ng-repeat="produto in produtos">
                             <hr style="width: 100%" ng-show="$index > 0"/>
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Produto {{$index + 1}}</label>
-                                        <input name="produto_nome" ng-model="produto.produto_nome" type="text" class="form-control" placeholder="Nome do produto" >
+                                        <label>Produto</label>
+                                        <input name="produto" index-prod="{{$index}}" id="tags-{{$index}}" type="text" class="form-control" placeholder="Nome do produto">
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Preço unitário</label>
-                                        <input name="produto_unidade" ng-model="produto.produto_unidade" type="text" class="form-control" placeholder="Preço unitário" >
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Preço</label>
+                                            <input name="produto" disabled  type="text" class="form-control" value="{{produto.produto_preco}}">
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row" ng-repeat="var in produto.variantes_produto">
+                                <div ng-if="var.variante_tipo == 'Texto Curto' " class="col-md-12">
+                                    <div class="form-group">
+                                        <label>{{var.variante_nome}}</label>
+                                        <input name="{{variante_nome}}" type="text" class="form-control" placeholder="{{var.variante_nome}}" ng-model="var.value">
+                                    </div>
+                                </div>
+                                <div ng-if="var.variante_tipo == 'Texto Longo' " class="col-md-12">
+                                    <div class="form-group">
+                                        <label>{{var.variante_nome}}</label>
+                                        <textarea name="{{variante_nome}}" type="text" class="form-control" ng-model="var.value">
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div ng-if="var.variante_tipo == 'Opções' " class="col-md-5">
+                                    <div class="form-group">
+                                        <label>{{var.variante_nome}}</label>
+                                        <select id="Tipo" name="Tipo" class="form-control" ng-model="var.value">
+                                            <option ng-repeat="option in var.opcoes" value="{{option.opcao_nome}}">{{option.opcao_nome}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                                 <div class="row">
                                     <div class="col-md-12" style="margin-left: 2px">
-                                <h3>Camisas</h3>
+                                <h3>Unidades</h3>
                                     </div>
                                 </div>
                                 <div ng-repeat="camisa in produto.camisas">
@@ -58,7 +103,7 @@
                                     >X</div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Nome na Camisa</label>
+                                            <label for="exampleInputEmail1">Nome</label>
                                             <input name="camisa_nome" ng-model="camisa.camisa_nome" type="text" class="form-control" placeholder="Nome na camisa" >
                                         </div>
                                     </div>
@@ -81,7 +126,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label>Comentários ( Sobre a camisa )</label>
+                                        <label>Comentários ( Sobre a unidade )</label>
                                         <div class="form-group">
                                             <textarea class="form-control" id="textarea" name="camisa_comentario" ng-model="camisa.camisa_comentario"></textarea>
                                         </div>
@@ -122,17 +167,21 @@
                         </div>
                             <div class="row" >
                                 <div class="col-md-12" >
-                                <button class="btn btn-success" ng-click="addMoreProd()">Adicionar mais Produtos</button>
+                                <button class="btn btn-success" style="margin: 10px" ng-click="addMoreProd()">Adicionar mais Produtos</button>
                                 </div>
                             </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <button class="btn btn-info btn-fill pull-right" ng-click="setPedido()"
                                     style="text-align: center;
                                     display: flex;
-                                    align-items: center;" >
+                                    align-items: center;margin: 10px" >
                                 <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
                                     <div class="loader-all" id="loader-1"></div>
                                 </div>Salvar
                             </button>
+                        </div>
+                    </div>
                             <div class="clearfix"></div>
                         </form>
                     </div>
@@ -143,3 +192,37 @@
         </div>
     </div>
 </div>
+<script>
+
+    var mask = {
+        money: function() {
+            var el = this
+                ,exec = function(v) {
+                v = v.replace(/\D/g,"");
+                v = new String(Number(v));
+                var len = v.length;
+                if (1== len)
+                    v = v.replace(/(\d)/,"0,0$1");
+                else if (2 == len)
+                    v = v.replace(/(\d)/,"0,$1");
+                else if (len > 2) {
+                    v = v.replace(/(\d{2})$/,',$1');
+                }
+                return v;
+            };
+
+            setTimeout(function(){
+                el.value = exec(el.value);
+            },1);
+        }
+
+    }
+
+    $(function(){
+        $('#frete').bind('keypress',mask.money)
+    });
+
+    $(function(){
+        $('#desconto').bind('keypress',mask.money)
+    });
+</script>

@@ -15,12 +15,19 @@ class Pedido extends CI_Controller {
 
         $this->load->model("Pedido_model");
 
-        $pedido = $this->Pedido_model->setPedido($Data["id"]);
+        $pedido = $this->Pedido_model->setPedido($Data["id"],$Data["pedido"]);
 
         foreach($Data["produtos"] as $key=>$value) {
 
             $produto = $this->Pedido_model->setProduto($value,$pedido);
-            foreach($value["camisas"] as $keycamisas=>$camisasPed) {
+
+            foreach($value["variantes_produto"] as $keyVar=>$valueVar) {
+
+                $this->Pedido_model->setVariantes($valueVar,$produto);
+
+            }
+
+                foreach($value["camisas"] as $keycamisas=>$camisasPed) {
 
                 $this->Pedido_model->setCamisas($camisasPed,$produto);
 
@@ -106,6 +113,66 @@ class Pedido extends CI_Controller {
         }else{
             redirect(base_url());
         }
+    }
+
+    public function gerarPDF (){
+
+        $id = $_GET['id'];
+
+        $this->load->model("Pedido_model");
+        $data = array();
+        $data["pedido"] = $this->Pedido_model->getPedido($id);
+        $data["subtotal"] = 0.0;
+
+
+        // Instancia a classe mPDF
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'ut-8',
+            'format' => "A4"
+        ]);
+            // Ao invés de imprimir a view 'welcome_message' na tela, passa o código
+        // HTML dela para a variável $html
+        $html = $this->load->view('pdf_pedido',$data,TRUE);
+        // Define um Cabeçalho para o arquivo PDF
+        $mpdf->SetHeader(array('odd' => array (
+            'L' => array (
+                'content' => '',
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000'
+            ),
+            'C' => array (
+                'content' => "  ",
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000',
+            ),
+            'R' => array (
+                'content' => '
+  <img style=\' height: 40px; width: 80px;\' src=\'https://gtxsports.com.br/wp-content/uploads/2017/07/gtxSports_blk.png\'>
+       ',
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000'
+            ),
+            'line' => 0,
+        ),
+    'even' => array ()));
+        // Define um rodapé para o arquivo PDF, nesse caso inserindo o número da
+        // página através da pseudo-variável PAGENO
+        $mpdf->SetFooter('{PAGENO}');
+        // Insere o conteúdo da variável $html no arquivo PDF
+        $mpdf->writeHTML($html);
+        // Cria uma nova página no arquivo
+        $mpdf->AddPage();
+        // Insere o conteúdo na nova página do arquivo PDF
+//        $mpdf->WriteHTML('<p><b>Minha nova página no arquivo PDF</b></p>');
+        // Gera o arquivo PDF
+        $mpdf->Output();
+
     }
 
     public function setUpdatePedido($Data = null){

@@ -1,3 +1,4 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <input style="display: none" value="<?=$id?>" id="user_id">
 <div class="content" ng-controller="updateCliente_ctrl">
     <div class="container-fluid">
@@ -5,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Adicionar Usuário</h4>
+                        <h4 class="title">Editar Usuário</h4>
                     </div>
                     <div class="content">
                         <form>
@@ -48,8 +49,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>CPF/CNPJ</label>
-                                        <input type="text" ng-model="cliente.cliente_doc" name="cliente_doc" class="form-control" placeholder="Telefone" >
+                                        <label>CPF</label>
+                                        <input type="text" ng-model="cliente.cliente_doc" id="cpfcnpj" name="cliente_doc" class="form-control" placeholder="Telefone" >
                                     </div>
                                 </div>
                             </div>

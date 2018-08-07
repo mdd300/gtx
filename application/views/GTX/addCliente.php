@@ -1,3 +1,4 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <div class="content" ng-controller="addCliente_ctrl">
     <div class="container-fluid">
         <div class="row">
@@ -47,8 +48,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>CPF/CNPJ</label>
-                                        <input type="text" ng-model="cliente.cliente_doc" name="cliente_" class="form-control" placeholder="Telefone" >
+                                        <label>CPF</label>
+                                        <input type="text" id="cpfcnpj" ng-model="cliente.cliente_doc" name="cliente_cpf" class="form-control cpfCnpj" placeholder="Telefone" >
                                     </div>
                                 </div>
                             </div>

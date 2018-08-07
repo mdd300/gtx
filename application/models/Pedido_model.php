@@ -11,12 +11,14 @@ class Pedido_model extends CI_Model {
         $this->load->helper('url');
     }
 
-    public function setPedido($cliente){
+    public function setPedido($cliente, $pedido){
 
         $data = array(
             "cliente_id"=> $cliente,
             "pedido_data" => date('d/m/Y h:m:s'),
-            "pedido_status" => AGUARDANDO
+            "pedido_status" => AGUARDANDO,
+            "pedido_frete" => $pedido["pedido_frete"],
+            "pedido_desconto" => $pedido["pedido_desconto"]
         );
 
         $this->db->insert("tb_pedido",$data);
@@ -29,7 +31,7 @@ class Pedido_model extends CI_Model {
 
         $data = array(
             "produto_nome"=> $produto["produto_nome"],
-            "produto_preco" => $produto["produto_unidade"],
+            "produto_preco" => $produto["produto_preco"],
             "produto_comentario" => $produto["produto_comentario"],
             "pedido_id" => $pedido
 
@@ -87,6 +89,9 @@ class Pedido_model extends CI_Model {
         foreach($dados->produtos as $key=>$value) {
 
             $this->db->where("produto_id",$value->produto_id);
+            $value->variantes_produto = $this->db->get("tb_pedido_produto_variantes")->result();
+
+            $this->db->where("produto_id",$value->produto_id);
             $value->camisas = $this->db->get("tb_camisas")->result();
 
             $this->db->where("produto_id",$value->produto_id);
@@ -114,6 +119,8 @@ class Pedido_model extends CI_Model {
     public function updatePedido($pedido){
         $this->db->where("pedido_id",$pedido["pedido_id"]);
         $this->db->set("pedido_status", $pedido["pedido_status"]);
+        $this->db->set("pedido_frete", $pedido["pedido_frete"]);
+        $this->db->set("pedido_desconto", $pedido["pedido_desconto"]);
         $this->db->update("tb_pedido");
     }
 
@@ -138,5 +145,16 @@ class Pedido_model extends CI_Model {
 
         );
         $this->db->update("tb_camisas",$data);
+    }
+
+    public function setVariantes($variantes,$prodId){
+
+        $data = array(
+            "produto_id"=> $prodId,
+            "variante_index"=>$variantes["variante_nome"],
+            "variante_value"=>$variantes["value"]
+        );
+
+        return $this->db->insert("tb_pedido_produto_variantes", $data);
     }
 }
