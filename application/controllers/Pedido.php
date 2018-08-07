@@ -128,7 +128,8 @@ class Pedido extends CI_Controller {
         // Instancia a classe mPDF
         $mpdf = new \Mpdf\Mpdf([
             'mode' => 'ut-8',
-            'format' => "A4"
+            'format' => "A4",
+            'tempDir' => base_url(). '/upload/temp'
         ]);
             // Ao invés de imprimir a view 'welcome_message' na tela, passa o código
         // HTML dela para a variável $html
