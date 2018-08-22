@@ -112,7 +112,7 @@
                 </li>
 
             </ul>
-            <?php}else{?>
+            <?php }else{?>
                 <ul class="nav">
 
                     <?php if($selected == 2){?>
@@ -127,7 +127,7 @@
                     </li>
                     <?php if($selected == 3){?>
                 <li class="active">
-                <?php }else{?>
+                <?php }else{ ?>
                     <li >
                         <?php }?>
                         <a href="<?=base_url()?>home/pedidos">
