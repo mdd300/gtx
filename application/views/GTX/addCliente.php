@@ -40,10 +40,18 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Telefone</label>
                                         <input type="text" ng-model="cliente.cliente_telefone" name="cliente_telefone" class="form-control" placeholder="Telefone" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Data de Nascimento</label>
+                                        <input type="text" ng-model="cliente.cliente_nasc" name="cliente_nasc" class="form-control data" placeholder="Data de Nascimento" >
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -53,12 +61,34 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>RG/IE</label>
+                                        <input type="text" ng-model="cliente.cliente_rg" name="cliente_rg" class="form-control rg" placeholder="RG/IE" >
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Endereço</label>
                                         <input type="text" ng-model="cliente.cliente_endereco" name="cliente_endereco" class="form-control" placeholder="Endereço" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Complemento</label>
+                                        <input type="text" ng-model="cliente.cliente_complemento" name="cliente_complemento" class="form-control" placeholder="Complemento" >
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Bairro</label>
+                                        <input type="text" ng-model="cliente.cliente_bairro" name="cliente_bairro" class="form-control" placeholder="Bairro" >
                                     </div>
                                 </div>
                             </div>
@@ -102,3 +132,11 @@
         </div>
     </div>
 </div>
+
+<script src="<?=base_url()?>public/assetsBoot/js/jquery.mask.min.js"></script>
+<script>
+    $(function(){
+        $(".rg").mask("99.999.999-9");
+        $(".data").mask("99/99/9999");
+    });
+</script>

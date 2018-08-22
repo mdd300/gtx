@@ -33,7 +33,7 @@ class Produtos_model extends CI_Model {
 
     public function setVariantes_model($data, $id){
 
-        $this->db->insert("tb_produto_variantes", array("variante_nome"=>$data["variante_nome"], "produto_id"=> $id, "variante_tipo"=>$data["variante_tipo"]));
+        $this->db->insert("tb_produto_variantes", array("variante_nome"=>$data["variante_nome"], "produto_id"=> $id));
 
         return $this->db->insert_id();
 
@@ -92,5 +92,35 @@ class Produtos_model extends CI_Model {
         return $variantes;
     }
 
+    public function updateProduto($id, $data){
+        $this->db->where("produto_id", $id);
+        $this->db->set("produto_nome", $data["produto_nome"]);
+        $this->db->set("produto_preco", $data["produto_preco"]);
+        return $this->db->update("tb_produtos");
+
+    }
+    public function updateVariante( $data){
+        $this->db->where("variante_id", $data["variante_id"]);
+        $this->db->set("variante_nome", $data["variante_nome"]);
+        return $this->db->update("tb_produto_variantes");
+
+    }
+    public function updateOpcao( $data){
+        $this->db->where("opcao_id", $data["opcao_id"]);
+        $this->db->set("opcao_nome", $data["opcao_nome"]);
+        return $this->db->update("tb_variante_opcoes");
+
+    }
+
+    public function getCategorias_model(){
+
+       return $this->db->get("tb_categorias")->result();
+
+    }
+    public function setCategorias_model($Data){
+
+        return $this->db->insert("tb_categorias",$Data);
+
+    }
 
 }

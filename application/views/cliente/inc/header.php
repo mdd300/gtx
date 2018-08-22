@@ -39,7 +39,7 @@
 </head>
 <body>
 
-<div class="wrapper">
+<div class="wrapper" style="height: auto !important;">
     <div class="sidebar" data-color="purple" data-image="<?=base_url()?>public/assetsBoot/img/sidebar-5.jpg">
 
         <!--

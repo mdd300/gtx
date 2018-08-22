@@ -34,10 +34,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <select id="Tipo" name="Tipo" class="form-control" ng-model="produto.produto_tipo">
-                                        <option value="Camisa">Camisa</option>
-                                        <option value="Shorts">Shorts</option>
-                                        <option value="Meião">Meião</option>
-                                        <option value="Outros">Outros</option>
+                                        <option ng-repeat="categoria in categorias" value="{{categoria.categoria_nome}}">{{categoria.categoria_nome}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -65,19 +62,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Tipo da variante</label>
-                                            <select id="Tipo" name="Tipo" class="form-control" ng-model="variante.variante_tipo">
-                                                <option value="Texto Curto">Texto Curto</option>
-                                                <option value="Texto Longo">Texto Longo</option>
-                                                <option value="Opções">Opções</option>
-                                            </select>
-                                        </div>
-                                        </div>
-                                </div>
-                                    <div ng-repeat="opcao in variante.opcoes" ng-if="variante.variante_tipo == 'Opções'">
+
+                                    <div ng-repeat="opcao in variante.opcoes" >
                                         <div class="row">
 
                                         <div class="col-md-6">
@@ -86,17 +72,11 @@
                                                 <input name="opcao_nome" ng-model="opcao.opcao_nome" type="text" class="form-control" placeholder="Opção" >
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Preço</label>
-                                                <input name="opcao_preco" ng-model="opcao.opcao_preco" type="tel" class="form-control input-preco-op preco-op-{{$parent.$index}}-{{$index}}" placeholder="Preço" >
-                                            </div>
-                                        </div>
                                     </div>
                                     </div>
                                 <div class="row" style="padding-left: 5px">
                                         <div class="col-md-12" >
-                                            <button style="float: right" class="btn btn-info" ng-click="addMoreOp($index)" ng-if="variante.variante_tipo == 'Opções'"> Adicionar Opção </button>
+                                            <button style="float: right" class="btn btn-info" ng-click="addMoreOp($index)"> Adicionar Opção </button>
                                         </div>
                                     </div>
                                 </div>
@@ -105,12 +85,6 @@
                                         <button class="btn btn-success" ng-click="addMoreVar($index)">Adicionar mais Variantes</button>
                                     </div>
                                 </div>
-                            <div class="col-md-12">
-                                <label>Comentários</label>
-                                <div class="form-group">
-                                    <textarea class="form-control" id="textarea" name="produto_comentario" ng-model="produto.produto_comentario"></textarea>
-                                </div>
-                            </div>
                             <button class="btn btn-info btn-fill pull-right" ng-click="setProduto()"
                                     style="text-align: center;
                                     display: flex;

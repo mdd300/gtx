@@ -27,7 +27,7 @@ class Pedido extends CI_Controller {
 
             }
 
-                foreach($value["camisas"] as $keycamisas=>$camisasPed) {
+            foreach($value["camisas"] as $keycamisas=>$camisasPed) {
 
                 $this->Pedido_model->setCamisas($camisasPed,$produto);
 
@@ -71,7 +71,7 @@ class Pedido extends CI_Controller {
 
         $this->load->model("Pedido_model");
 
-        $retorno = $this->Pedido_model->getPedidos()->result();
+        $retorno = $this->Pedido_model->getPedidos($Data)->result();
 
         if ($Output == true) {
             echo json_encode($retorno);
@@ -101,12 +101,14 @@ class Pedido extends CI_Controller {
 
     public function updatePedido (){
 
-        $data = array(
-            "selected" => 3,
-            "id" => $_GET['id']
-        );
+
         $session = $this->session->userdata("fashon_session");
         if(isset($session)) {
+            $data = array(
+                "selected" => 3,
+                "id" => $_GET['id'],
+                "tipo" => $session["user_tipo"]
+            );
             $this->load->view("gtx/inc/header", $data);
             $this->load->view("gtx/pedido", $data);
             $this->load->view("gtx/inc/footer");
@@ -120,59 +122,20 @@ class Pedido extends CI_Controller {
         $id = $_GET['id'];
 
         $this->load->model("Pedido_model");
-        $data = array();
-        $data["pedido"] = $this->Pedido_model->getPedido($id);
-        $data["subtotal"] = 0.0;
 
+        $pdf = $this->Pedido_model->getPDF_Model($id);
 
-        // Instancia a classe mPDF
-        $mpdf = new \Mpdf\Mpdf([
-            'mode' => 'ut-8',
-            'format' => "A4"
-        ]);
-            // Ao invés de imprimir a view 'welcome_message' na tela, passa o código
-        // HTML dela para a variável $html
-        $html = $this->load->view('pdf_pedido',$data,TRUE);
-        // Define um Cabeçalho para o arquivo PDF
-        $mpdf->SetHeader(array('odd' => array (
-            'L' => array (
-                'content' => '',
-                'font-size' => 10,
-                'font-style' => 'B',
-                'font-family' => 'serif',
-                'color'=>'#000000'
-            ),
-            'C' => array (
-                'content' => "  ",
-                'font-size' => 10,
-                'font-style' => 'B',
-                'font-family' => 'serif',
-                'color'=>'#000000',
-            ),
-            'R' => array (
-                'content' => '
-  <img style=\' height: 40px; width: 80px;\' src=\'https://gtxsports.com.br/wp-content/uploads/2017/07/gtxSports_blk.png\'>
-       ',
-                'font-size' => 10,
-                'font-style' => 'B',
-                'font-family' => 'serif',
-                'color'=>'#000000'
-            ),
-            'line' => 0,
-        ),
-    'even' => array ()));
-        // Define um rodapé para o arquivo PDF, nesse caso inserindo o número da
-        // página através da pseudo-variável PAGENO
-        $mpdf->SetFooter('{PAGENO}');
-        // Insere o conteúdo da variável $html no arquivo PDF
-        $mpdf->writeHTML($html);
-        // Cria uma nova página no arquivo
-        $mpdf->AddPage();
-        // Insere o conteúdo na nova página do arquivo PDF
-//        $mpdf->WriteHTML('<p><b>Minha nova página no arquivo PDF</b></p>');
-        // Gera o arquivo PDF
-        $mpdf->Output();
-
+        if($pdf->num_rows() > 0) {
+            $pdf = $pdf->result()[0];
+            $this->load->helper('download');
+            if ($pdf->pdf_nome) {
+                $data = file_get_contents('./upload/pdf/' . $pdf->pdf_nome);
+            }
+            $name = $pdf->pdf_nome;
+            force_download($name, $data);
+        }else{
+            echo "Não possui PDF";
+        }
     }
 
     public function setUpdatePedido($Data = null){
@@ -204,18 +167,18 @@ class Pedido extends CI_Controller {
         foreach($Data["insert"] as $keyImg=>$imgPed) {
 
             if($imgPed["insert"]["src"] !== ""){
-            $img = $imgPed["insert"]["src"];
-            if($img !== "") {
-                $img = str_replace('data:image/png;base64,', '', $img);
-                $img = str_replace(' ', '+', $img);
-                $data = base64_decode($img);
-                $nome = uniqid() . ".png";
-                $file = UPLOAD_DIR . $nome;
+                $img = $imgPed["insert"]["src"];
+                if($img !== "") {
+                    $img = str_replace('data:image/png;base64,', '', $img);
+                    $img = str_replace(' ', '+', $img);
+                    $data = base64_decode($img);
+                    $nome = uniqid() . ".png";
+                    $file = UPLOAD_DIR . $nome;
 
-                file_put_contents($file, $data);
+                    file_put_contents($file, $data);
 
-                $this->Pedido_model->setImgs($nome, $imgPed["produto_id"]);
-            }
+                    $this->Pedido_model->setImgs($nome, $imgPed["produto_id"]);
+                }
             }
         }
 
@@ -223,7 +186,7 @@ class Pedido extends CI_Controller {
 
         foreach($Data["update"]["produtos"] as $key=>$value) {
 
-                $this->Pedido_model->updateProduto($value);
+            $this->Pedido_model->updateProduto($value);
 
             foreach ($value["camisas"] as $keycamisas => $camisasPed) {
 

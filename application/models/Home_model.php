@@ -36,10 +36,55 @@ class Home_model extends CI_Model {
     public function getCliente_model($id = null){
 
         if($id !== null){
-            $this->db->select("id_cliente,cliente_nome,cliente_sobrenome,cliente_telefone,cliente_email,cliente_doc,cliente_endereco,cliente_cidade,cliente_estado,cliente_cep, cliente_username");
             $this->db->where("id_cliente", $id);
         }
         return $this->db->get("tb_cliente")->result();
+    }
+
+    public function setPDF_Model($id, $nome){
+        $this->db->set('pedido_id', $id);
+        $this->db->set("pdf_nome", $nome);
+        return $this->db->insert("tb_pdf");
+    }
+
+    public function getUsers_model($data){
+
+        if(isset($data['where'])){
+            $this->db->select("user_nome,user_sobrenome,user_email,user_login,user_tipo");
+            $this->db->where("user_id",$data['where']);
+        }
+
+        return $this->db->get("tb_user")->result();
+
+    }
+
+    public function setUsers_model($data){
+
+        $user = array(
+            "user_nome" => $data['user_nome'],
+            "user_sobrenome" => $data['user_sobrenome'],
+            "user_email" => $data['user_email'],
+            "user_login" => $data['user_login'],
+            "user_senha" => Fo_login::encrypt_password($data['user_senha']),
+            "user_tipo" => $data['user_tipo'],
+        );
+
+        return $this->db->insert("tb_user", $user);
+
+    }
+    public function updateUsers_model($data, $id){
+
+        $user = array(
+            "user_nome" => $data['user_nome'],
+            "user_sobrenome" => $data['user_sobrenome'],
+            "user_email" => $data['user_email'],
+            "user_login" => $data['user_login'],
+            "user_senha" => Fo_login::encrypt_password($data['user_senha']),
+            "user_tipo" => $data['user_tipo'],
+        );
+        $this->db->where("user_id", $id);
+        return $this->db->update("tb_user", $user);
+
     }
 
   }

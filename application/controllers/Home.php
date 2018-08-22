@@ -78,11 +78,13 @@ class Home extends CI_Controller {
     }
     public  function clientes(){
 
-	    $data = array(
-	        "selected" => 2
-        );
+
         $session = $this->session->userdata("fashon_session");
         if(isset($session)) {
+            $data = array(
+                "selected" => 2,
+                "tipo" => $session
+            );
             $this->load->view("gtx/inc/header", $data);
             $this->load->view("gtx/clientes");
             $this->load->view("gtx/inc/footer");
@@ -90,13 +92,83 @@ class Home extends CI_Controller {
             redirect(base_url());
         }
     }
-    public  function pedidos(){
+    public  function users(){
 
-        $data = array(
-            "selected" => 3
-        );
+
         $session = $this->session->userdata("fashon_session");
         if(isset($session)) {
+            $data = array(
+                "selected" => 6,
+                "tipo" => $session["user_tipo"]
+
+            );
+            $this->load->view("gtx/inc/header", $data);
+            $this->load->view("gtx/users");
+            $this->load->view("gtx/inc/footer");
+        }else{
+            redirect(base_url());
+        }
+    }
+    public  function addUser(){
+
+
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $data = array(
+                "selected" => 6,
+                "tipo" => $session["user_tipo"]
+
+            );
+            $this->load->view("gtx/inc/header", $data);
+            $this->load->view("gtx/AddUsers");
+            $this->load->view("gtx/inc/footer");
+        }else{
+            redirect(base_url());
+        }
+    }
+
+    public  function updateUser(){
+
+
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $data = array(
+                "selected" => 6,
+                "tipo" => $session["user_tipo"]
+            );
+            $this->load->view("gtx/inc/header", $data);
+            $this->load->view("gtx/AddUsers");
+            $this->load->view("gtx/inc/footer");
+        }else{
+            redirect(base_url());
+        }
+    }
+    public  function categorias(){
+
+
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $data = array(
+                "selected" => 5,
+                "tipo" => $session["user_tipo"]
+
+            );
+            $this->load->view("gtx/inc/header", $data);
+            $this->load->view("gtx/categorias");
+            $this->load->view("gtx/inc/footer");
+        }else{
+            redirect(base_url());
+        }
+    }
+    public  function pedidos(){
+
+
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $data = array(
+                "selected" => 3,
+                "tipo" => $session["user_tipo"]
+            );
             $this->load->view("gtx/inc/header", $data);
             $this->load->view("gtx/pedidos");
             $this->load->view("gtx/inc/footer");
@@ -106,11 +178,13 @@ class Home extends CI_Controller {
     }
     public  function produtos(){
 
-        $data = array(
-            "selected" => 4
-        );
+
         $session = $this->session->userdata("fashon_session");
         if(isset($session)) {
+            $data = array(
+                "selected" => 4,
+                "tipo" => $session["user_tipo"]
+            );
             $this->load->view("gtx/inc/header", $data);
             $this->load->view("gtx/produtos");
             $this->load->view("gtx/inc/footer");
@@ -118,13 +192,71 @@ class Home extends CI_Controller {
             redirect(base_url());
         }
     }
+
+    public function getUsers($Data = null){
+        if ($Data == null) {
+            $Output = true;
+            $Data = $this->input->post();
+        } else {
+            $Output = false;
+        }
+
+        $this->load->model("Home_model");
+        $retorno = $this->Home_model->getUsers_model($Data);
+
+        if ($Output == true) {
+            echo json_encode($retorno);
+        } else {
+            return $retorno;
+        }
+    }
+
+    public function setUser($Data = null){
+        if ($Data == null) {
+            $Output = true;
+            $Data = $this->input->post();
+        } else {
+            $Output = false;
+        }
+
+        $this->load->model("Home_model");
+        $retorno = $this->Home_model->setUsers_model($Data["data"]);
+
+        if ($Output == true) {
+            echo json_encode($retorno);
+        } else {
+            return $retorno;
+        }
+    }
+
+    public function setUpdateUser($Data = null){
+        if ($Data == null) {
+            $Output = true;
+            $Data = $this->input->post();
+        } else {
+            $Output = false;
+        }
+
+        $this->load->model("Home_model");
+        $retorno = $this->Home_model->updateUsers_model($Data["data"],$Data["id"]);
+
+        if ($Output == true) {
+            echo json_encode($retorno);
+        } else {
+            return $retorno;
+        }
+    }
+
+
     public  function addProduto(){
 
-        $data = array(
-            "selected" => 4
-        );
+
         $session = $this->session->userdata("fashon_session");
         if(isset($session)) {
+            $data = array(
+                "selected" => 4,
+                "tipo" => $session["user_tipo"]
+            );
             $this->load->view("gtx/inc/header", $data);
             $this->load->view("gtx/addProduto");
             $this->load->view("gtx/inc/footer");
@@ -134,8 +266,11 @@ class Home extends CI_Controller {
     }
     public  function addPedido(){
 
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
         $data = array(
-            "selected" => 2
+            "selected" => 3,
+            "tipo" => $session["user_tipo"]
         );
 
         $this->load->model("Home_model");
@@ -145,19 +280,26 @@ class Home extends CI_Controller {
         $this->load->view("gtx/inc/header", $data);
         $this->load->view("gtx/addPedido",$retorno);
         $this->load->view("gtx/inc/footer");
-
+        }else{
+            redirect(base_url());
+        }
     }
     public function updateCliente(){
 
+	    $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
         $data = array(
             "selected" => 2,
-            "id" => $_GET['id']
+            "id" => $_GET['id'],
+            "tipo" => $session["user_tipo"]
         );
 
         $this->load->view("gtx/inc/header", $data);
         $this->load->view("gtx/updateCliente",$data);
         $this->load->view("gtx/inc/footer");
-
+        }else{
+            redirect(base_url());
+        }
     }
 
     public function getClienteWhere($Data = null){
@@ -180,14 +322,19 @@ class Home extends CI_Controller {
 
     public  function AddCliente(){
 
-        $data = array(
-            "selected" => 2
-        );
+        $session = $this->session->userdata("fashon_session");
+        if(isset($session)) {
+            $data = array(
+                "selected" => 2,
+                "tipo" => $session["user_tipo"]
+            );
 
         $this->load->view("gtx/inc/header", $data);
         $this->load->view("gtx/addCliente");
         $this->load->view("gtx/inc/footer");
-
+        }else{
+            redirect(base_url());
+        }
     }
 
     public function setCliente($Data = null){
@@ -247,6 +394,111 @@ class Home extends CI_Controller {
             return $retorno;
         }
     }
+
+
+
+    public function editPDF (){
+
+        $id = $_GET['id'];
+
+        $this->load->model("Pedido_model");
+        $this->load->model("Home_model");
+
+        $data = array();
+        $data["pedido"] = $this->Pedido_model->getPedido($id);
+        $data["cliente"] =$this->Home_model->getCliente_model( $data["pedido"]->cliente_id)[0];
+        $data["subtotal"] = 0.0;
+
+
+        // Instancia a classe mPDF
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'ut-8',
+            'format' => "A4",
+        ]);
+        // Ao invés de imprimir a view 'welcome_message' na tela, passa o código
+        // HTML dela para a variável $html
+        $data["html"] = $this->load->view('pdf_pedido',$data,TRUE);
+
+        $this->load->view("cliente/inc/header");
+        $this->load->view("cliente/pdf", $data);
+        $this->load->view("cliente/inc/footer");
+
+
+    }
+
+    public function gerarPDF ($Data = null){
+
+        if ($Data == null) {
+            $Output = true;
+            $Data = $this->input->post();
+        } else {
+            $Output = false;
+        }
+
+        $html = $Data["content"];
+
+        // Instancia a classe mPDF
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'ut-8',
+            'format' => "A4",
+            'setAutoTopMargin' => 'pad'
+        ]);
+        // Ao invés de imprimir a view 'welcome_message' na tela, passa o código
+        // HTML dela para a variável $html
+        // Define um Cabeçalho para o arquivo PDF
+        $mpdf->SetHeader(array('odd' => array (
+            'L' => array (
+                'content' => '',
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000'
+            ),
+            'C' => array (
+                'content' => "  ",
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000',
+            ),
+            'R' => array (
+                'content' => '
+  <img style=\' height: 40px; width: 80px;\' src=\'https://gtxsports.com.br/wp-content/uploads/2017/07/gtxSports_blk.png\'>
+       ',
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000'
+            ),
+            'line' => 1,
+        ),
+            'even' => array ()));
+        // Define um rodapé para o arquivo PDF, nesse caso inserindo o número da
+        // página através da pseudo-variável PAGENO
+        $mpdf->SetFooter('{PAGENO}');
+        // Insere o conteúdo da variável $html no arquivo PDF
+        $mpdf->writeHTML($html);
+        // Cria uma nova página no arquivo
+        // Insere o conteúdo na nova página do arquivo PDF
+//        $mpdf->WriteHTML('<p><b>Minha nova página no arquivo PDF</b></p>');
+        // Gera o arquivo PDF
+
+        $pdf = uniqid().".pdf";
+        $arquivo = $mpdf->Output("upload/pdf/".$pdf,"F" );
+
+        $retorno["name"] = "upload/pdf/".$pdf;
+
+        $this->load->model("Home_model");
+
+        $this->Home_model->setPDF_Model($Data["id"],$pdf);
+
+        if ($Output == true) {
+            echo json_encode($retorno);
+        } else {
+            return $retorno;
+        }
+    }
+
 
 
 }

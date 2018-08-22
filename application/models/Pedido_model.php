@@ -33,6 +33,7 @@ class Pedido_model extends CI_Model {
             "produto_nome"=> $produto["produto_nome"],
             "produto_preco" => $produto["produto_preco"],
             "produto_comentario" => $produto["produto_comentario"],
+            "variacao_unidade" => $produto["variacao_unidade"],
             "pedido_id" => $pedido
 
         );
@@ -70,7 +71,11 @@ class Pedido_model extends CI_Model {
 
     }
 
-    public function getPedidos(){
+    public function getPedidos($Data = null){
+
+        if(isset($Data['where'])){
+            $this->db->where("cliente_id", $Data['where']);
+        }
 
         $this->db->join("tb_cliente as cli", "cli.id_cliente = cliente_id");
         return $this->db->get("tb_pedido");
@@ -130,6 +135,7 @@ class Pedido_model extends CI_Model {
             "produto_nome"=> $prod["produto_nome"],
             "produto_preco" => $prod["produto_preco"],
             "produto_comentario" => $prod["produto_comentario"],
+            "variacao_unidade" => $prod["variacao_unidade"],
 
         );
         $this->db->update("tb_pedido_produto",$data);
@@ -156,5 +162,12 @@ class Pedido_model extends CI_Model {
         );
 
         return $this->db->insert("tb_pedido_produto_variantes", $data);
+    }
+
+    public function getPDF_Model($id){
+        $this->db->where("pedido_id", $id);
+        $this->db->order_by('pdf_id','desc')->limit(1);
+        return $this->db->get('tb_pdf');
+
     }
 }

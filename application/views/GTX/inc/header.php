@@ -56,17 +56,10 @@
                 </a>
             </div>
 
+            <? if($tipo == 1){?>
             <ul class="nav">
-<!--                --><?php //if($selected == 1){?>
-<!--                <li class="active">-->
-<!--                    --><?php //}else{?>
-<!--                <li >-->
-<!--                    --><?php //}?>
-<!--                    <a href="--><?//=base_url()?><!--home/dashboard">-->
-<!--                        <i class="pe-7s-graph"></i>-->
-<!--                        <p>Dashboard</p>-->
-<!--                    </a>-->
-<!--                </li>-->
+
+
                 <?php if($selected == 2){?>
                 <li class="active">
                     <?php }else{?>
@@ -97,8 +90,54 @@
                         <p>Produtos</p>
                     </a>
                 </li>
+                <?php if($selected == 5){?>
+                <li class="active">
+                    <?php }else{?>
+                <li >
+                    <?php }?>
+                    <a href="<?=base_url()?>home/categorias">
+                        <i class="pe-7s-portfolio"></i>
+                        <p>Categorias</p>
+                    </a>
+                </li>
+                <?php if($selected == 6){?>
+                <li class="active">
+                    <?php }else{?>
+                <li >
+                    <?php }?>
+                    <a href="<?=base_url()?>home/users">
+                        <i class="pe-7s-id"></i>
+                        <p>User</p>
+                    </a>
+                </li>
 
             </ul>
+            <?}else{?>
+                <ul class="nav">
+
+                    <?php if($selected == 2){?>
+                <li class="active">
+                <?php }else{?>
+                    <li >
+                        <?php }?>
+                        <a href="<?=base_url()?>home/clientes">
+                            <i class="pe-7s-users"></i>
+                            <p>Cliente</p>
+                        </a>
+                    </li>
+                    <?php if($selected == 3){?>
+                <li class="active">
+                <?php }else{?>
+                    <li >
+                        <?php }?>
+                        <a href="<?=base_url()?>home/pedidos">
+                            <i class="pe-7s-note2"></i>
+                            <p>Pedidos</p>
+                        </a>
+                    </li>
+
+                </ul>
+            <?}?>
         </div>
     </div>
 

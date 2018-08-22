@@ -1,36 +1,21 @@
 
 <!doctype html>
-<html lang="en" ng-app="app_landing">
+<html lang="en" >
 <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="<?=base_url()?>public/assetsBoot/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>GTX Sports</title>
 
     <meta name="viewport" content="width=1024">
 
-    <link href="<?=base_url()?>public/assets/metronic/custom/css/Website/Pedido/style_pedido.css" rel="stylesheet" />
-
-    <!-- Bootstrap core CSS     -->
-    <link href="<?=base_url()?>public/assetsBoot/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!--  Light Bootstrap Table core CSS    -->
-    <link href="<?=base_url()?>public/assetsBoot/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet"/>
-
+    <link rel="stylesheet" type="text/css" href="<?=base_url()?>public/assets/metronic/custom/css/Website/Pedido/style_pedido.css" rel="stylesheet" />
 
 </head>
 <body>
 
-<div class="wrapper">
-
-    <div class="content" ng-controller="addProduto_ctrl">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-
                         <div class="content" style="padding-top: 1px; width: 100%">
-                            <div class="row" style="margin-top: 50px">
+                            <div class="row" style="">
                                 <div class="col-md-12" style="text-align: center">
                                     <p style="color: black"><b>AUTORIZAÇÃO PARA PRODUÇÃO</b></p>
                                 </div>
@@ -46,7 +31,7 @@
                                         GTX. </p>
                                 </div>
                             </div>
-                            <div class="row" style="margin-top: 30px">
+                            <div class="row" style="">
                                 <div class="col-md-12" style="text-align: center">
                                     <p style="color: black"><b>INFORMAÇÕES CADASTRAIS</b></p>
                                 </div>
@@ -54,66 +39,64 @@
                             <div style="border: 1px solid black;margin-top: 15px">
                                 <div class="row" style="border-bottom: 1px solid black; margin-left: 0px; margin-top: 5px;margin-bottom: 10px;">
                                     <div class="col-md-12">
-                                        <div style="color: black; "><b>NOME/RAZÃO SOCIAL:</b></div>
+                                        <div style="color: black; "><b>NOME/RAZÃO SOCIAL: </b><?= $cliente->cliente_nome?></div>
                                     </div>
                                 </div>
                                 <div class="row" style="border-bottom: 1px solid black;margin-left: 0px; margin-top: 5px;margin-bottom: 10px;">
                                     <div class="col-md-4" style="float: left">
-                                        <div style="color: black"><b>CPF/CNPJ:</b></div>
+                                        <div style="color: black"><b>CPF/CNPJ: </b><?= $cliente->cliente_doc?></div>
                                     </div>
                                     <div class="col-md-4" style="float: left">
-                                        <div style="color: black"><b>RG/IE:</b></div>
+                                        <div style="color: black"><b>RG/IE: </b><?= $cliente->cliente_rg?></div>
                                     </div>
                                     <div class="col-md-4" style="float: left">
-                                        <div style="color: black" ><b>DATA NASC:</b></div>
+                                        <div style="color: black" ><b>DATA NASC: </b><?= $cliente->cliente_nasc?></div>
                                     </div>
                                 </div>
                                 <div class="row" style="border-bottom: 1px solid black;margin-left: 0px; margin-top: 5px;">
                                     <div class="col-md-12">
-                                        <div style="color: black"><b>ENDEREÇO:</b></div>
+                                        <div style="color: black"><b>ENDEREÇO: </b><?= $cliente->cliente_endereco?></div>
                                     </div>
                                 </div>
                                 <div class="row" style="border-bottom: 1px solid black;margin-left: 0px; margin-top: 5px;margin-bottom: 10px;">
                                     <div class="col-md-6">
-                                        <div style="color: black"><b>COMPLEMENTO:</b></div>
+                                        <div style="color: black"><b>COMPLEMENTO: </b><?= $cliente->cliente_complemento?></div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div style="color: black"><b>BAIRRO:</b></div>
+                                        <div style="color: black"><b>BAIRRO: </b><?= $cliente->cliente_bairro?></div>
                                     </div>
                                 </div>
                                 <div class="row" style="border-bottom: 1px solid black;margin-left: 0px; margin-top: 5px;margin-bottom: 10px;">
                                     <div class="col-md-4">
-                                        <div style="color: black"><b>CIDADE:</b></div>
+                                        <div style="color: black"><b>CIDADE: </b><?= $cliente->cliente_cidade?></div>
                                     </div>
                                     <div class="col-md-4">
-                                        <div style="color: black"><b>ESTADO:</b></div>
+                                        <div style="color: black"><b>ESTADO: </b><?= $cliente->cliente_estado?></div>
                                     </div>
                                     <div class="col-md-4">
-                                        <div style="color: black"><b>CEP:</b></div>
+                                        <div style="color: black"><b>CEP: </b><?= $cliente->cliente_cep?></div>
                                     </div>
                                 </div>
                                 <div class="row" style="border-bottom: 1px solid black;margin-left: 0px; margin-top: 5px;margin-bottom: 10px;">
-                                    <div class="col-md-4">
-                                        <div style="color: black"><b>CELULAR:</b></div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div style="color: black"><b>TEL:</b></div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div style="color: black"><b>CONTATO:</b></div>
+                                    <div class="col-md-12">
+                                        <div style="color: black"><b>CONTATO: </b><?= $cliente->cliente_telefone?></div>
                                     </div>
                                 </div>
                                 <div class="row" style="border-bottom: 1px solid black;margin-left: 0px; margin-top: 5px;">
                                     <div class="col-md-12">
-                                        <div style="color: black"><b>E-MAIL:</b></div>
+                                        <div style="color: black"><b>E-MAIL: </b><?= $cliente->cliente_email?></div>
                                     </div>
                                 </div>
                             </div>
-                        <p style="margin-top: 10px"><img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30"> O endereço de entrega é o mesmo informado acima. </p>
+                        <p style="margin-top: 10px">
+                            <input ng-model="check.check1" id="check1" type="checkbox" ng-if="check.check1 == 0" name="check" value="1"/>
+                            <input ng-model="check.check1" ng-if="check.check1 == 1" id="check1" type="checkbox" checked="checked" name="check" value="1"/>
+                            <label> O endereço de entrega é o mesmo informado acima.</label>
+                            </p>
 
-                            <div class="row" style="margin-top: 350px">
+                            <div class="row" style="margin-top: 50px">
                                 <div class="col-md-12" style="text-align: center">
-                                    <p style="color: black"><b>INFORMAÇÕES CADASTRAIS</b></p>
+                                    <p style="color: black"><b>PRODUTOS</b></p>
                                 </div>
                             </div>
 
@@ -153,53 +136,64 @@
                                     de cores de acabamentos, e entre as peças que compõem o UNIFORME,
                                     tonalidade de camisa e calção por exemplo, devido aos diferentes tipos de
                                     matéria-prima utilizadas na produção desse tipo de material
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check2" ng-if="check.check2 == 0" id="check2" type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check2" ng-if="check.check2 == 1" id="check2" type="checkbox" checked="checked" name="check" value="1"/>
+
                                     Ciente e de acordo
                                 </li>
                                 <li>
                                     As cores e o layout são os escolhidos
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check3" ng-if="check.check3 == 0" id="check3" type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check3" ng-if="check.check3 == 1" id="check3" type="checkbox" checked="checked" name="check" value="1"/>
                                     Confere
                                 </li>
                                 <li>
                                     A GOLA é a escolhida?
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check4" ng-if="check.check4 == 0" id="check4" type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check4" ng-if="check.check4 == 1" id="check4" type="checkbox" checked="checked" name="check" value="1"/>
                                     Confere
                                 </li>
                                 <li>
                                     Acabamento na MANGA (punho) é o escolhido?
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check5" id="check5"  ng-if="check.check5 == 0"  type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check5" ng-if="check.check5 == 1" id="check5" type="checkbox" checked="checked" name="check" value="1"/>
+
                                     Confere
                                 </li>
                                 <li>
                                     O ESCUDO está de acordo?
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check6" ng-if="check.check6 == 0" id="check6" type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check6" ng-if="check.check6 == 1" id="check6" type="checkbox" checked="checked" name="check" value="1"/>
                                     Confere
                                 </li>
                                 <li>
                                     A localização das logos, marca GTX e PATROCINADOR (es) e ESCUDO estão
                                     corretas?
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check7" ng-if="check.check7 == 0" id="check7" type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check7" ng-if="check.check7 == 1" id="check7" type="checkbox" checked="checked" name="check" value="1"/>
                                     Confere
                                 </li>
                                 <li>
                                     Os posicionamentos do(s) NUMERO (s) e NOMES estão corretos?
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check8" ng-if="check.check8 == 0" id="check8" type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check8" ng-if="check.check8 == 1" id="check8" type="checkbox" checked="checked" name="check" value="1"/>
                                     Confere
                                 </li>
                                 <li>
                                     A MODALIDADE do pacote está correta?
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check9" ng-if="check.check9 == 0" id="check9" type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check9" ng-if="check.check9 == 1" id="check9" type="checkbox" checked="checked" name="check" value="1"/>
                                     Confere
                                 </li>
                                 <li>
                                     O TECIDO, grade DORÇO e grade PERNA estão corretas?
-                                    <img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30">
+                                    <input ng-model="check.check10" ng-if="check.check10 == 0" id="check10" type="checkbox" name="check" value="1"/>
+                                    <input ng-model="check.check10" ng-if="check.check10 == 1" id="check10" type="checkbox" checked="checked" name="check" value="1"/>
                                     Confere
                                 </li>
                             </ul>
 
-                            <div class="row" style="margin-top: 120px">
+                            <div class="row" style="margin-top: 30px">
                                  <div class="col-md-12" style="text-align: center">
                                     <p style="color: black"><b>ORÇAMENTO</b></p>
                                 </div>
@@ -235,13 +229,13 @@
                                 </tr>
                             </table>
                             <div style="width: 100%;border: 1px solid black">
-                                <div style="float:right; text-align: right; margin-right: 40px">Subtotal: R$<?= number_format($subtotal + (float) str_replace(',', '.', $pedido->pedido_frete),2, ",", "") ?>
+                                <div style="    width: 100%;float:right; text-align: right; margin-right: 40px">Subtotal: R$<?= number_format($subtotal + (float) str_replace(',', '.', $pedido->pedido_frete),2, ",", "") ?>
                                 </div>
                                 <?php if($pedido->pedido_desconto != 0){?>
-                                <div style="float:right; text-align: right; margin-right: 40px; color: red">Desconto: R$<?= $pedido->pedido_desconto ?>
+                                <div style="    width: 100%;float:right; text-align: right; margin-right: 40px; color: red">Desconto: R$<?= $pedido->pedido_desconto ?>
                                 </div>
                                 <?php }?>
-                                <div style="float:right; text-align: right; padding-right: 40px;border: 1px solid black"><b style="color: black">TOTAL:</b> R$<?= number_format(((float) str_replace(',', '.', $subtotal) + (float) str_replace(',', '.', $pedido->pedido_frete) - (float) str_replace(',', '.', $pedido->pedido_desconto)),2, ",", "") ?>
+                                <div style="    width: 100%;float:right; text-align: right; padding-right: 40px;"><b style="color: black">TOTAL:</b> R$<?= number_format(((float) str_replace(',', '.', $subtotal) + (float) str_replace(',', '.', $pedido->pedido_frete) - (float) str_replace(',', '.', $pedido->pedido_desconto)),2, ",", "") ?>
                                 </div>
                             </div>
 
@@ -265,7 +259,7 @@
                                     <th style="width: 50px;border: 2px solid black;text-align: center;">Tamanho Camisa</th>
                                     <th style="width: 200px;border: 2px solid black;text-align: center;">Número</th>
                                     <th style="width: 50px;border: 2px solid black;text-align: center;">Nome na camisa</th>
-                                    <th style="width: 50px;border: 2px solid black;text-align: center;">Tamanho Short</th>
+                                    <th style="width: 50px;border: 2px solid black;text-align: center;"><?= $value->variacao_unidade?></th>
                                 </tr>
 
                                 <?php foreach ($value->camisas as $keyCam=> $valueCam){
@@ -282,7 +276,9 @@
                             </table>
                                 <?php
                             }?>
-                            <p style="margin-top: 10px"><img src="https://cdn1.iconfinder.com/data/icons/toggle/512/checkbox-off-512.png" height="30" width="30"> O nome do time, as numerações, os nomes e os tamanhos estão de acordo. </p>
+                            <p style="margin-top: 10px"><input ng-model="check.check11" ng-if="check.check11 == 0" id="check11" type="checkbox" name="check" value="1"/>
+                                <input ng-model="check.check11" ng-if="check.check11 == 1" id="check11" type="checkbox" checked="checked" name="check" value="1"/>
+                                O nome do time, as numerações, os nomes e os tamanhos estão de acordo. </p>
 
                             <div class="row" style="margin-top: 30px">
                                 <div class="col-md-12" style="text-align: center">
@@ -353,17 +349,12 @@
                                 do Consumidor.</p>
                             <p>XII – O uso do material comprova o aceite da mercadoria e revoga o direito
                                 de reclamação de divergência do produto. </p>
-                            <p>Eu, ______________________________________________________
+                            <p style="    display: initial;">Eu,<input type="text" style="display: inline;width: 400px; border: 0px; border-bottom: 1px solid black" id="inputAss" ng-model="check.inputAss"> <a style="color: black;display: initial; font-weight: bold" ng-show="gerar == true">{{check.inputAss}}</a>
                                 <b style="color: black;">DECLARO</b> ter prestado as informações e declarações acima, e estar ciente
                                 das DISPOSIÇÕES GERAIS constantes neste instrumento e <b style="color: black;">AUTORIZO
                                     EXPRESSAMENTE A PRODUÇÃO DO MATERIAL CONTRATADO.</b> </p>
                         </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-</div>
 </body>
 
 </html>

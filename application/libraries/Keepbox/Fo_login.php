@@ -108,7 +108,8 @@ class Fo_login
                             $Result['id'] = $checkedUser->user_id;
 
                             $CI->session->set_userdata(self::$session_name, [
-                                'user_id' => $checkedUser->user_id
+                                'user_id' => $checkedUser->user_id,
+                                'user_tipo' =>$checkedUser->user_tipo,
                             ]);
 
                         } else {

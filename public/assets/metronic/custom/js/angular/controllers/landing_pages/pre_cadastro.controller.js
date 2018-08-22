@@ -42,7 +42,7 @@ angular.module('app_landing').controller('landing_ctrl', ['$scope', '$http','$ti
                         $scope.mensagem_erro = false;
                     }, 3000);
                 }else{
-                    window.location.href = base_url + "home/clientes"
+                    window.location.href = base_url + "home/pedidos"
                 }
 
             }
@@ -62,8 +62,9 @@ angular.module('app_landing').controller('clientes_ctrl', ['$scope', '$http','$t
     $('#popoverData').popover();
     $('#popoverOption').popover({ trigger: "hover" });
 
-    $scope.clientes = []
-;
+    $scope.clientes = [];
+    $scope.pedidos = [];
+
     $http({
 
         method: 'POST',
@@ -78,6 +79,26 @@ angular.module('app_landing').controller('clientes_ctrl', ['$scope', '$http','$t
             $('#userTable').DataTable();
         }, 500);
     })
+
+    $scope.pedidosCliente = function (id) {
+
+        $http({
+
+            method: 'POST',
+            url: "/gtx/pedido/getPedidos",
+            data: $.param({where: id}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+            $scope.pedidos = response.data;
+            $timeout(function () {
+                $('#pedidoTable').DataTable();
+            }, 700);
+
+        })
+
+    }
 
 }]);
 
@@ -329,6 +350,8 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             "produto_nome": "",
             "produto_unidade": "",
             "produto_comentario": "",
+            "variacao_unidade": "",
+            "variacao_selected": false,
             "variantes_produto": [],
             "imgs": [{
                 "src": ""
@@ -454,6 +477,8 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             "produto_nome": "",
             "produto_unidade": "",
             "produto_comentario": "",
+            "variacao_unidade": "",
+            "variacao_selected": false,
             "imgs": [{
                 "src": ""
             }
@@ -632,8 +657,18 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
                 }
             })
 
+            if(value.variacao_unidade == ""){
+                value.variacao_selected = false
+            }else{
+                value.variacao_selected = true
+
+
+            }
+
+
         })
 
+        console.log($scope.pedido.produtos)
         });
 
 $scope.updatePedido = function () {
@@ -762,16 +797,16 @@ $scope.updatePedido = function () {
                         '<a href="{3}" target="{4}" data-notify="url"></a>' +
                         '</div>'
                     });
-                    $timeout(function () {
-                        window.location.href = "/gtx/home/pedidos";
-                    }, 2000);
+                    // $timeout(function () {
+                    //     window.location.href = "/gtx/home/pedidos";
+                    // }, 2000);
                 })
 
             }else{
                 $scope.loader_send = false;
-                $timeout(function () {
-                    window.location.href = "/gtx/home/pedidos";
-                }, 2000);
+                // $timeout(function () {
+                //     window.location.href = "/gtx/home/pedidos";
+                // }, 2000);
             }
 
 
@@ -1011,7 +1046,22 @@ angular.module('app_landing').controller('addProduto_ctrl', ['$scope', '$http','
             }]
         }]
     };
+
+    $scope.categorias = []
     $scope.loader_send = false;
+
+    $http({
+
+        method: 'POST',
+        url: "/gtx/Produto/getCategorias",
+        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+    }).then(function (response) {
+
+        $scope.categorias = response.data
+
+    })
+
 
     $scope.addMoreVar = function () {
 
@@ -1155,5 +1205,429 @@ $(function(){
     $(function(){
         $('.input-preco-op').bind('keypress',mask.money)
     });
+}]);
+
+angular.module('app_landing').controller('updateProduto_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
+
+        $scope.produto = []
+
+        $scope.loader_send = false;
+
+
+    var mask = {
+        money: function() {
+            var el = this
+                ,exec = function(v) {
+                v = v.replace(/\D/g,"");
+                v = new String(Number(v));
+                var len = v.length;
+                if (1== len)
+                    v = v.replace(/(\d)/,"0,0$1");
+                else if (2 == len)
+                    v = v.replace(/(\d)/,"0,$1");
+                else if (len > 2) {
+                    v = v.replace(/(\d{2})$/,',$1');
+                }
+                return v;
+            };
+
+            setTimeout(function(){
+                el.value = exec(el.value);
+            },1);
+        }
+
+    }
+
+    $(function(){
+        $('.input-preco').bind('keypress',mask.money)
+    });
+
+        $http({
+
+            method: 'POST',
+            url: "/gtx/produto/getProduto",
+            data: $.param({id: $(".id-produto").val()}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+            $scope.produto = response.data
+            $scope.produto.produto_variantes_insert = []
+
+
+            angular.forEach($scope.produto.produto_variantes, function(value, key) {
+
+                value.opcoes_insert = []
+
+            })
+
+            })
+
+    $scope.addMoreOp = function (id) {
+
+        $scope.produto.produto_variantes[id].opcoes_insert.push(
+            {
+                "opcao_nome": "",
+                "opcao_preco": ""
+            }
+        )
+
+
+    }
+
+    $scope.addMoreOpInsert = function (id) {
+
+        $scope.produto.produto_variantes_insert[id].opcoes.push(
+            {
+                "opcao_nome": "",
+                "opcao_preco": ""
+            }
+        )
+
+
+    }
+
+    $scope.addMoreVar = function () {
+
+        $scope.produto.produto_variantes_insert.push({
+            "variante_nome": "",
+            "opcoes": [{
+                "opcao_nome": "",
+                "opcao_preco": ""
+            }]
+        })
+
+
+    }
+
+    $scope.updateProduto = function () {
+        $http({
+
+            method: 'POST',
+            url: "/gtx/produto/setUpdateProduto",
+            data: $.param({id: $(".id-produto").val(), data: $scope.produto}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+
+
+        })
+    }
+
+}]);
+angular.module('app_landing').controller('pdf_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
+
+    $scope.check = {
+        "check1": 0,
+        "check2": 0,
+        "check3": 0,
+        "check4": 0,
+        "check5": 0,
+        "check6": 0,
+        "check7": 0,
+        "check8": 0,
+        "check9": 0,
+        "check10": 0,
+        "check11": 0,
+        "inputAss": ""
+
+    }
+
+    $scope.gerar = false;
+
+    $scope.gerarPDF = function () {
+
+        $("#inputAss").remove();
+
+        $scope.gerar = true;
+        var url_string = window.location.href
+        var url = new URL(url_string);
+        var id = url.searchParams.get("id");
+
+        $timeout(function () {
+        $http({
+
+            method: 'POST',
+            url: "/gtx/home/gerarPDF",
+            data: $.param({content: $(".pdf-content").prop('outerHTML'), id: id}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+            var form = document.createElement("form");
+            form.method = "GET";
+            form.action = "/gtx/"+ response.data.name;
+            form.target = "_blank";
+            document.body.appendChild(form);
+            form.submit();
+
+        })
+        },100)
+
+    }
+
+
+
+}]);
+angular.module('app_landing').controller('categoria_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
+
+    $scope.categorias = []
+    $scope.categoriaAdd = {
+        "categoria_nome": ""
+    }
+
+    $http({
+
+        method: 'POST',
+        url: "/gtx/Produto/getCategorias",
+        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+    }).then(function (response) {
+
+        $scope.categorias = response.data
+        $timeout(function () {
+            $('#catTable').DataTable();
+        }, 500);
+    })
+
+
+    $scope.setCategoria = function () {
+        $http({
+
+            method: 'POST',
+            url: "/gtx/Produto/setCategorias",
+            data: $.param($scope.categoriaAdd),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+            $http({
+
+                method: 'POST',
+                url: "/gtx/Produto/getCategorias",
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+            }).then(function (response) {
+
+                $scope.categorias = response.data
+                $timeout(function () {
+                    $('#catTable').DataTable();
+                }, 500);
+            })
+
+        })
+    }
+
+}]);
+
+angular.module('app_landing').controller('users_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
+
+    $scope.users = []
+
+    $http({
+
+        method: 'POST',
+        url: "/gtx/Home/getUsers",
+        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+    }).then(function (response) {
+
+        $scope.users = response.data
+        $timeout(function () {
+            $('#usersTable').DataTable();
+        }, 500);
+    })
+
+}]);
+
+angular.module('app_landing').controller('addUser_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
+
+    $scope.user = {
+        "user_nome": "",
+        "user_sobrenome": "",
+        "user_email": "",
+        "user_tipo": "",
+        "user_login": "",
+        "user_senha": ""
+    }
+    $scope.loader_send = false;
+    $scope.user_senhaConfirmar = '';
+    $scope.senhaIncorreta = false;
+
+    var url_string = window.location.href
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
+
+    if(id !== null){
+
+        $http({
+
+            method: 'POST',
+            url: "/gtx/Home/getUsers",
+            data: $.param({where: id}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+            $scope.user = response.data[0]
+            console.log($scope.user)
+        })
+        }
+
+    $scope.setUser = function () {
+
+        if($scope.user.user_nome !== ""){
+            if($scope.user.user_sobrenome !== ""){
+                if($scope.user.user_email !== ""){
+                    if($scope.user.user_login !== ""){
+                        if(id == null){
+                        if($scope.user.user_senha !== ""){
+                            if($scope.user.user_senha == $scope.user_senhaConfirmar){
+
+
+                                    $scope.loader_send = true;
+
+                                $http({
+
+                                    method: 'POST',
+                                    url: "/gtx/Home/setUser",
+                                    data: $.param({data: $scope.user}),
+                                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+                                }).then(function (response) {
+
+                                    $scope.loader_send = false;
+
+                                    $.notify({
+                                        // options
+                                        icon: '',
+                                        title: 'O usuário foi cadastrado com sucesso',
+                                        url: 'https://github.com/mouse0270/bootstrap-notify',
+                                        target: '_blank'
+                                    }, {
+                                        // settings
+                                        element: 'body',
+                                        position: null,
+                                        type: "success",
+                                        allow_dismiss: true,
+                                        newest_on_top: false,
+                                        showProgressbar: false,
+                                        placement: {
+                                            from: "top",
+                                            align: "right"
+                                        },
+                                        offset: 20,
+                                        spacing: 10,
+                                        z_index: 1031,
+                                        delay: 5000,
+                                        timer: 1000,
+                                        url_target: '_blank',
+                                        mouse_over: null,
+                                        animate: {
+                                            enter: 'animated fadeInDown',
+                                            exit: 'animated fadeOutUp'
+                                        },
+                                        onShow: null,
+                                        onShown: null,
+                                        onClose: null,
+                                        onClosed: null,
+                                        icon_type: 'class',
+                                        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                                        '<span data-notify="icon"></span> ' +
+                                        '<span data-notify="title">{1}</span> ' +
+                                        '<span data-notify="message">{2}</span>' +
+                                        '<div class="progress" data-notify="progressbar">' +
+                                        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                                        '</div>' +
+                                        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                                        '</div>'
+                                    });
+
+                                    $timeout(function () {
+                                        window.location.href = "users";
+                                    }, 2000);
+
+                                })
+
+                            }
+                        }else{
+                                $scope.senhaIncorreta = true;
+                            }
+                    }else{
+                            if($scope.user.user_senha !== "" || $scope.user.user_senha == $scope.user_senhaConfirmar){
+                            $scope.loader_send = true;
+
+                            $http({
+
+                                method: 'POST',
+                                url: "/gtx/Home/setUpdateUser",
+                                data: $.param({data: $scope.user, id: id}),
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+                            }).then(function (response) {
+
+                                $scope.loader_send = false;
+
+                                $.notify({
+                                    // options
+                                    icon: '',
+                                    title: 'O usuário foi editado com sucesso',
+                                    url: 'https://github.com/mouse0270/bootstrap-notify',
+                                    target: '_blank'
+                                }, {
+                                    // settings
+                                    element: 'body',
+                                    position: null,
+                                    type: "success",
+                                    allow_dismiss: true,
+                                    newest_on_top: false,
+                                    showProgressbar: false,
+                                    placement: {
+                                        from: "top",
+                                        align: "right"
+                                    },
+                                    offset: 20,
+                                    spacing: 10,
+                                    z_index: 1031,
+                                    delay: 5000,
+                                    timer: 1000,
+                                    url_target: '_blank',
+                                    mouse_over: null,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                    onShow: null,
+                                    onShown: null,
+                                    onClose: null,
+                                    onClosed: null,
+                                    icon_type: 'class',
+                                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                                    '<span data-notify="icon"></span> ' +
+                                    '<span data-notify="title">{1}</span> ' +
+                                    '<span data-notify="message">{2}</span>' +
+                                    '<div class="progress" data-notify="progressbar">' +
+                                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                                    '</div>' +
+                                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                                    '</div>'
+                                });
+
+                                $timeout(function () {
+                                    window.location.href = "/gtx/home/users";
+                                }, 2000);
+
+                            })
+                        }
+                }                        }
+                }
+        }
+        }
+
+    }
+
 }]);
 

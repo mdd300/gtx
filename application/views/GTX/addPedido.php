@@ -64,20 +64,7 @@
                             </div>
 
                             <div class="row" ng-repeat="var in produto.variantes_produto">
-                                <div ng-if="var.variante_tipo == 'Texto Curto' " class="col-md-12">
-                                    <div class="form-group">
-                                        <label>{{var.variante_nome}}</label>
-                                        <input name="{{variante_nome}}" type="text" class="form-control" placeholder="{{var.variante_nome}}" ng-model="var.value">
-                                    </div>
-                                </div>
-                                <div ng-if="var.variante_tipo == 'Texto Longo' " class="col-md-12">
-                                    <div class="form-group">
-                                        <label>{{var.variante_nome}}</label>
-                                        <textarea name="{{variante_nome}}" type="text" class="form-control" ng-model="var.value">
-                                        </textarea>
-                                    </div>
-                                </div>
-                                <div ng-if="var.variante_tipo == 'Opções' " class="col-md-5">
+                                <div  class="col-md-5">
                                     <div class="form-group">
                                         <label>{{var.variante_nome}}</label>
                                         <select id="Tipo" name="Tipo" class="form-control" ng-model="var.value">
@@ -92,6 +79,34 @@
                                 <h3>Unidades</h3>
                                     </div>
                                 </div>
+                            <div >
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nome</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Tamanho</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Numero</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" ng-if="produto.variacao_selected == false">
+                                    <div class="form-group">
+                                        <button class="btn btn-success" ng-click="produto.variacao_selected = true">Adicionar Variação</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" ng-if="produto.variacao_selected == true">
+                                    <div class="form-group">
+                                        <input name="variante_pedido" ng-model="produto.variacao_unidade" type="text" class="form-control" placeholder="Digite o nome da Variação" >
+                                    </div>
+                                </div>
+
+                            </div>
                                 <div ng-repeat="camisa in produto.camisas">
                                     <hr style="width: 100%" ng-show="$index > 0"/>
                                     <div ng-click="deleteCamisa($parent.$index, $index)"
@@ -101,36 +116,32 @@
                                                     float: right;
                                                     cursor: pointer"
                                     >X</div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Nome</label>
                                             <input name="camisa_nome" ng-model="camisa.camisa_nome" type="text" class="form-control" placeholder="Nome na camisa" >
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Tamanho</label>
                                             <input name="camisa_tamanho" ng-model="camisa.camisa_tamanho" type="text" class="form-control" placeholder="Tamanho" >
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Numero</label>
                                             <input name="camisa_numero" ng-model="camisa.camisa_numero" type="text" class="form-control" placeholder="Numero" >
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-2" ng-if="produto.variacao_selected == true">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Short</label>
-                                            <input name="camisa_short" ng-model="camisa.camisa_short" type="text" class="form-control" placeholder="Short" >
+                                            <input name="camisa_short" ng-model="camisa.camisa_short" type="text" class="form-control" placeholder="{{produto.variacao_unidade}}" >
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <label>Comentários ( Sobre a unidade )</label>
-                                        <div class="form-group">
-                                            <textarea class="form-control" id="textarea" name="camisa_comentario" ng-model="camisa.camisa_comentario"></textarea>
-                                        </div>
-                                    </div>
+<!--                                    <div class="col-md-12">-->
+<!--                                        <label>Comentários ( Sobre a unidade )</label>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <textarea class="form-control" id="textarea" name="camisa_comentario" ng-model="camisa.camisa_comentario"></textarea>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
 
                                 </div>
                                 <div class="row" style="padding-left: 5px">

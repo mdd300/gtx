@@ -103,6 +103,14 @@
                                             </div>
                                             <div>
                                                 <div class="popover__wrapper">
+                                                    <a id="popoverData" data-toggle="modal" data-target="#Modal-Pedidos" ng-click="pedidosCliente(cliente.id_cliente)"><i style="cursor: pointer" class="pe-7s-notebook" ></i></a>
+                                                    <div class="push popover__content">
+                                                        <p class="popover__message">Listar Pedidos</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="popover__wrapper">
                                                 <a id="popoverData" href="<?=base_url()?>home/updateCliente/?id={{cliente.id_cliente}}"  data-content="Editar dados do cliente" rel="popover" data-original-title="Editar"><i style="cursor: pointer" class="pe-7s-note"></i></a>
                                                     <div class="push popover__content">
                                                         <p class="popover__message">Editar cliente</p>
@@ -130,7 +138,72 @@
             </div>
         </div>
     </div>
-</div>
 <script>
     $('#popoverData').popover();
 </script>
+<style>
+    .modal-backdrop {
+        position: initial;
+        z-index: 1040 !important;
+    }
+    .modal-dialog {
+        z-index: 1100 !important;
+    }
+</style>
+
+<!-- Modal -->
+<div id="Modal-Pedidos" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg" style="z-index: 1111;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cliente</h4>
+            </div>
+            <div class="modal-body" style="margin: 15px">
+                <div class="content table-responsive table-full-width">
+
+                    <table id="pedidoTable" class="table table-hover table-striped" >
+                        <thead>
+                        <tr>
+                            <th>N˚ do Pedido</th>
+                            <th>Cliente</th>
+                            <th>Email</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="pedido in pedidos">
+                            <td>{{pedido.pedido_id}}</td>
+                            <td>{{pedido.cliente_nome + " " + pedido.cliente_sobrenome}}</td>
+                            <td>{{pedido.cliente_email}}</td>
+                            <td>{{pedido.pedido_data}}</td>
+                            <td>
+                                <a id="popoverData" target="_blank" href="<?=base_url()?>pedido/gerarPDF/?id={{pedido.pedido_id}}"  data-content="Editar dados do cliente" rel="popover" data-original-title="Editar"><img style="    height: 12px;
+    width: 12px;" src="<?=base_url("public/assets/metronic/custom/img/icon/pdf.png")?>"></a>
+                                <a id="popoverData" href="<?=base_url()?>pedido/updatePedido/?id={{pedido.pedido_id}}"  data-content="Editar dados do cliente" rel="popover" data-original-title="Editar"><i style="cursor: pointer" class="pe-7s-note"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>N˚ do Pedido</th>
+                            <th>Cliente</th>
+                            <th>Email</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
