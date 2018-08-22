@@ -56,7 +56,7 @@
                 </a>
             </div>
 
-            <? if($tipo == 1){?>
+            <?php if($tipo == 1 ){?>
             <ul class="nav">
 
 
@@ -112,7 +112,7 @@
                 </li>
 
             </ul>
-            <?}else{?>
+            <?php}else{?>
                 <ul class="nav">
 
                     <?php if($selected == 2){?>
