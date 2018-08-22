@@ -98,7 +98,11 @@
                                            <label>{{produto.variacao_unidade}}</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-3" ng-if="produto.variacao_selected == false">
+                                        <div class="form-group">
 
+                                        </div>
+                                    </div>
                                 </div>
                                     <div ng-repeat="camisa in produto.camisas">
 
