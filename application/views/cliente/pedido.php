@@ -88,7 +88,12 @@
                                             <label>Tamanho</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2" ng-if="produto.variacao_selected == true">
+                                        <div class="form-group">
+                                            <label>Numero</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5" ng-if="produto.variacao_selected == false">
                                         <div class="form-group">
                                             <label>Numero</label>
                                         </div>
@@ -98,11 +103,7 @@
                                            <label>{{produto.variacao_unidade}}</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3" ng-if="produto.variacao_selected == false">
-                                        <div class="form-group">
 
-                                        </div>
-                                    </div>
                                 </div>
                                     <div ng-repeat="camisa in produto.camisas">
 
