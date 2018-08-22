@@ -94,7 +94,7 @@
                             <label> O endereço de entrega é o mesmo informado acima.</label>
                             </p>
 
-                            <div class="row" style="margin-top: 50px">
+                            <div class="row" style="margin-top: 100px">
                                 <div class="col-md-12" style="text-align: center">
                                     <p style="color: black"><b>PRODUTOS</b></p>
                                 </div>
