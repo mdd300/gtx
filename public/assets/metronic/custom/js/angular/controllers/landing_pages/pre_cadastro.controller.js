@@ -1333,10 +1333,12 @@ angular.module('app_landing').controller('pdf_ctrl', ['$scope', '$http','$timeou
         "inputAss": ""
 
     }
+    $scope.loader_send = false;
 
     $scope.gerar = false;
 
     $scope.gerarPDF = function () {
+        $scope.loader_send = true;
 
         $("#inputAss").remove();
 
@@ -1354,6 +1356,7 @@ angular.module('app_landing').controller('pdf_ctrl', ['$scope', '$http','$timeou
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
         }).then(function (response) {
+            $scope.loader_send = false;
 
             var form = document.createElement("form");
             form.method = "GET";
