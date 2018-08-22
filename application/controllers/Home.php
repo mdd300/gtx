@@ -83,7 +83,7 @@ class Home extends CI_Controller {
         if(isset($session)) {
             $data = array(
                 "selected" => 2,
-                "tipo" => $session
+                "tipo" => $session["user_tipo"]
             );
             $this->load->view("gtx/inc/header", $data);
             $this->load->view("gtx/clientes");
