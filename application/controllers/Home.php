@@ -509,6 +509,7 @@ class Home extends CI_Controller {
             $name = $pdf->pdf_nome;
             force_download($name, $data);
         }else{
+            this.$this->visualizarPDF()
         }
     }
 
