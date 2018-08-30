@@ -155,13 +155,17 @@ class Pedido_model extends CI_Model {
 
     public function setVariantes($variantes,$prodId){
 
-        $data = array(
-            "produto_id"=> $prodId,
-            "variante_index"=>$variantes["variante_nome"],
-            "variante_value"=>$variantes["value"]
-        );
+        if(isset($variantes["value"])) {
+            $data = array(
+                "produto_id" => $prodId,
+                "variante_index" => $variantes["variante_nome"],
+                "variante_value" => $variantes["value"]
+            );
+            return $this->db->insert("tb_pedido_produto_variantes", $data);
 
-        return $this->db->insert("tb_pedido_produto_variantes", $data);
+        }else{
+            return true;
+        }
     }
 
     public function getPDF_Model($id){

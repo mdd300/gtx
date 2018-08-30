@@ -30,13 +30,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Valor do frete</label>
-                                        <input name="cliente_username" id="frete" type="text" class="form-control" placeholder="Valor do frete" ng-model="dataPedido.pedido_frete">
+                                        <input name="cliente_username" id="frete" ng-change="calcTotal()" type="text" class="form-control" placeholder="Valor do frete" ng-model="dataPedido.pedido_frete">
                                     </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label >desconto</label>
-                                        <input name="cliente_email" id="desconto" type="text" class="form-control" placeholder="Desconto" ng-model="dataPedido.pedido_desconto">
+                                        <input name="cliente_email" id="desconto" ng-change="calcTotal()" type="text" class="form-control" placeholder="Desconto" ng-model="dataPedido.pedido_desconto">
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +73,16 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Quantidade</label>
+                                            <input name="quantidade"  id="quantidade-{{$index}}" ng-change="quantidadeCam($index)" type="text" class="form-control" ng-model="produto.quant">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                                 <div class="row">
                                     <div class="col-md-12" style="margin-left: 2px">
                                 <h3>Unidades</h3>
@@ -146,7 +155,7 @@
                                 </div>
                                 <div class="row" style="padding-left: 5px">
                                     <div class="col-md-12" >
-                                        <button class="btn btn-success" ng-click="addMoreCamisas($index)">Adicionar mais Camisas</button>
+                                        <button class="btn btn-success" ng-click="addMoreCamisas($index,false)">Adicionar mais Camisas</button>
                                     </div>
                                 </div>
                                         <h3 style="margin-left: 2px">Imagens</h3>
@@ -181,6 +190,9 @@
                                 <button class="btn btn-success" style="margin: 10px" ng-click="addMoreProd()">Adicionar mais Produtos</button>
                                 </div>
                             </div>
+                    <div class="col-md-12">
+                        <h2 style="float: right"><b>Total: </b> {{total}}</h2>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <button class="btn btn-info btn-fill pull-right" ng-click="setPedido()"
@@ -191,6 +203,22 @@
                                     <div class="loader-all" id="loader-1"></div>
                                 </div>Salvar
                             </button>
+                            <button class="btn btn-danger btn-fill pull-right"
+                                             style="text-align: center;
+                                    display: flex;
+                                    align-items: center;margin: 10px" data-toggle="modal" data-target="#visualizar">
+                                <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
+                                    <div class="loader-all" id="loader-1"></div>
+                                </div>Visualizar
+                            </button>
+                            <button class="btn btn-warning btn-fill pull-right"
+                                    style="text-align: center;
+                                    display: flex;
+                                    align-items: center;margin: 10px" data-toggle="modal" data-target="#Gerar">
+                                <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
+                                    <div class="loader-all" id="loader-1"></div>
+                                </div>Gerar PDF
+                            </button>
                         </div>
                     </div>
                             <div class="clearfix"></div>
@@ -198,7 +226,59 @@
                     </div>
                 </div>
             </div>
+        <style>
+            .modal-backdrop {
+                position: initial;
+                z-index: 1040 !important;
+            }
+            .modal-dialog {
+                z-index: 1100 !important;
+            }
+        </style>
+        <!-- Modal -->
+        <div class="modal fade" id="visualizar" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Salvar o Pedido anter de visualizar?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>É preciso salvar o pedido para visualizar o PDF, deseja salvar?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-success" ng-click="visualizarPDF()">Salvar</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="Gerar" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Salvar o Pedido antes de gerar?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>É preciso salvar o pedido para gerar o PDF, deseja salvar?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-success" ng-click="GerarPDFPedido()">Salvar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         </div>
     </div>
@@ -213,10 +293,8 @@
                 v = new String(Number(v));
                 var len = v.length;
                 if (1== len)
-                    v = v.replace(/(\d)/,"0,0$1");
-                else if (2 == len)
                     v = v.replace(/(\d)/,"0,$1");
-                else if (len > 2) {
+                else if (len > 1) {
                     v = v.replace(/(\d{2})$/,',$1');
                 }
                 return v;
@@ -229,11 +307,6 @@
 
     }
 
-    $(function(){
-        $('#frete').bind('keypress',mask.money)
-    });
 
-    $(function(){
-        $('#desconto').bind('keypress',mask.money)
-    });
+
 </script>

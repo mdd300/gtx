@@ -341,8 +341,8 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
     $scope.loader_send = false;
 
     $scope.dataPedido = {
-        "pedido_frete": "",
-        "pedido_desconto": ""
+        "pedido_frete": 0,
+        "pedido_desconto": 0
     }
 
     $scope.produtos = [
@@ -351,6 +351,7 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             "produto_unidade": "",
             "produto_comentario": "",
             "variacao_unidade": "",
+            "quant": 1,
             "variacao_selected": false,
             "variantes_produto": [],
             "imgs": [{
@@ -407,6 +408,8 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
                         $scope.produtos[targ.getAttribute("index-prod")].produto_preco = response.data.produto_preco
                         console.log($scope.produtos[targ.getAttribute("index-prod")])
 
+                        $scope.calcTotal()
+
                     })
                 }
             });
@@ -418,6 +421,9 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
 
     $scope.deleteCamisa = function (prod,cam) {
         $scope.produtos[prod].camisas.splice(cam,1)
+        $scope.produtos[prod].quat--;
+        $scope.calcTotal()
+
     }
 
     $('body').on("change", "input[type=file]", function(){
@@ -478,6 +484,7 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             "produto_unidade": "",
             "produto_comentario": "",
             "variacao_unidade": "",
+            "quant": 0,
             "variacao_selected": false,
             "imgs": [{
                 "src": ""
@@ -526,7 +533,7 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
         },100);
 
     }
-    $scope.addMoreCamisas = function (id) {
+    $scope.addMoreCamisas = function (id,add) {
         $scope.produtos[id].camisas.push({
             "camisa_nome": "",
             "camisa_tamanho": "",
@@ -535,8 +542,230 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             "camisa_comentario": "",
         })
 
+        if(add == false)
+            $scope.pedido.produtos[prod].quant++;
+
+        $scope.calcTotal()
 
     }
+
+    $scope.total = 0;
+
+    $scope.calcTotal = function () {
+
+        $scope.total = 0;
+
+        function numberToReal(numero) {
+            var numero = numero.toFixed(2).split('.');
+            numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join('.');
+            return numero.join(',');
+        }
+
+        angular.forEach($scope.produtos, function(value, key) {
+
+            var preco = value.produto_preco.replace(",", ".")
+            $scope.total = parseFloat(preco) * parseFloat(value.quant);
+
+        })
+        if($scope.dataPedido.pedido_frete === '' && $scope.dataPedido.pedido_desconto === "" ){}
+        else if($scope.dataPedido.pedido_frete !== '' && $scope.dataPedido.pedido_desconto !== "" && $scope.dataPedido.pedido_frete !== "undefined" && $scope.dataPedido.pedido_desconto !== "undefined") {
+
+            $scope.total+= ($scope.dataPedido.pedido_frete - $scope.dataPedido.pedido_desconto);
+            $scope.total += 0;
+
+        }else if($scope.dataPedido.pedido_frete === '' && $scope.dataPedido.pedido_frete !== undefined){
+            $scope.total -= ($scope.dataPedido.pedido_desconto);
+            $scope.total += 0;
+        }
+
+        else if($scope.dataPedido.pedido_desconto === "" && $scope.dataPedido.pedido_desconto !== undefined) {
+            $scope.total += ($scope.dataPedido.pedido_frete)
+            $scope.total += 0;
+        }
+        else{
+            $scope.total += 0;
+        }
+
+        $scope.total = numberToReal($scope.total)
+    }
+
+    $scope.quantidadeCam = function (id) {
+
+        if($("#quantidade-"+id).val() > $scope.produtos[id].camisas.length){
+
+            $scope.addMoreCamisas(id, true);
+
+        }else if($("#quantidade-"+id).val() == ""){
+
+        }else if($("#quantidade-"+id).val() < $scope.produtos[id].camisas.length){
+            $scope.produtos[id].camisas.length = $("#quantidade-"+id).val();
+            $scope.calcTotal()
+
+        }
+
+    }
+
+    $scope.visualizarPDF = function () {
+        $scope.loader_send = true;
+
+        $http({
+
+            method: 'POST',
+            url: "/gtx/pedido/setPedido",
+            data: $.param({produtos: $scope.produtos, id: $(".id-cliente").val(), variantes: $scope.dataProduto, pedido:$scope.dataPedido}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+            $scope.loader_send = false;
+            var action = "/gtx/home/visualizarPDF/?id=" + response.data;
+            event.preventDefault();
+            var newForm = jQuery('<form>', {
+                'action': action,
+                'target': '_blank',
+                'method': 'post'
+            });
+            $(document.body).append(newForm);
+            newForm.submit();
+
+            $.notify({
+                // options
+                icon: '',
+                title: 'O Pedido foi criado com sucesso',
+                url: 'https://github.com/mouse0270/bootstrap-notify',
+                target: '_blank'
+            },{
+                // settings
+                element: 'body',
+                position: null,
+                type: "success",
+                allow_dismiss: true,
+                newest_on_top: false,
+                showProgressbar: false,
+                placement: {
+                    from: "top",
+                    align: "right"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                url_target: '_blank',
+                mouse_over: null,
+                animate: {
+                    enter: 'animated fadeInDown',
+                    exit: 'animated fadeOutUp'
+                },
+                onShow: null,
+                onShown: null,
+                onClose: null,
+                onClosed: null,
+                icon_type: 'class',
+                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                '<span data-notify="icon"></span> ' +
+                '<span data-notify="title">{1}</span> ' +
+                '<span data-notify="message">{2}</span>' +
+                '<div class="progress" data-notify="progressbar">' +
+                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                '</div>' +
+                '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                '</div>'
+            });
+            $timeout(function () {
+                window.location.href = "/gtx/pedido/updatePedido/?id="+response.data;
+            }, 2000);
+        })
+
+
+
+
+
+    }
+
+    $scope.GerarPDFPedido = function () {
+        $scope.loader_send = true;
+
+        $http({
+
+            method: 'POST',
+            url: "/gtx/pedido/setPedido",
+            data: $.param({produtos: $scope.produtos, id: $(".id-cliente").val(), variantes: $scope.dataProduto, pedido:$scope.dataPedido}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+            $scope.loader_send = false;
+            var action = "/gtx/home/editPDF/?id=" +  response.data;
+
+
+            event.preventDefault();
+            var newForm = jQuery('<form>', {
+                'action': action,
+                'target': '_blank',
+                'method': 'post'
+            });
+            $(document.body).append(newForm);
+            newForm.submit();
+            //
+            $.notify({
+                // options
+                icon: '',
+                title: 'O Pedido foi criado com sucesso',
+                url: 'https://github.com/mouse0270/bootstrap-notify',
+                target: '_blank'
+            },{
+                // settings
+                element: 'body',
+                position: null,
+                type: "success",
+                allow_dismiss: true,
+                newest_on_top: false,
+                showProgressbar: false,
+                placement: {
+                    from: "top",
+                    align: "right"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                url_target: '_blank',
+                mouse_over: null,
+                animate: {
+                    enter: 'animated fadeInDown',
+                    exit: 'animated fadeOutUp'
+                },
+                onShow: null,
+                onShown: null,
+                onClose: null,
+                onClosed: null,
+                icon_type: 'class',
+                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                '<span data-notify="icon"></span> ' +
+                '<span data-notify="title">{1}</span> ' +
+                '<span data-notify="message">{2}</span>' +
+                '<div class="progress" data-notify="progressbar">' +
+                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                '</div>' +
+                '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                '</div>'
+            });
+            $timeout(function () {
+                window.location.href = "/gtx/pedido/updatePedido/?id="+response.data;
+            }, 2000);
+        })
+
+
+
+    }
+    $scope.setPedido2 = function () {
+
+    }
+
 
     $scope.setPedido = function () {
 
@@ -552,6 +781,8 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             }).then(function (response) {
 
             $scope.loader_send = false;
+
+            $scope.idPedido = response.data;
 
             $.notify({
                 // options
@@ -636,6 +867,8 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
     $scope.deleteCamisas = [];
     $scope.loader_send = false;
     $scope.status_chanced = false;
+    $scope.quantidade = [];
+    $scope.total = 0;
 
     $http({
 
@@ -656,6 +889,8 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
                     "src":""
                 }
             })
+            value.quant =  value.camisas.length;
+
 
             if(value.variacao_unidade == ""){
                 value.variacao_selected = false
@@ -665,11 +900,384 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
 
             }
 
+        })
+        $scope.calcTotal()
+
+        });
+
+
+    $scope.quantidadeCam = function (id,prod) {
+        console.log($("#quantidade-"+id).val())
+
+        if($("#quantidade-"+id).val() > $scope.pedido.produtos[id].camisas.length){
+
+            $scope.addMoreCamisas(prod,id, true);
+
+        }else if($("#quantidade-"+id).val() == ""){
+
+        }else if($("#quantidade-"+id).val() < $scope.pedido.produtos[id].camisas.length){
+            $scope.pedido.produtos[id].camisas.length = $("#quantidade-"+id).val();
+            $scope.calcTotal()
+
+        }
+
+    }
+
+    $scope.calcTotal = function () {
+
+        $scope.total = 0.00;
+
+        function numberToReal(numero) {
+            var numero = numero.toFixed(2).split('.');
+            numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join('.');
+            return numero.join(',');
+        }
+
+        angular.forEach($scope.pedido.produtos, function(value, key) {
+
+            var preco = value.produto_preco.replace(",", ".")
+            $scope.total = parseFloat(preco) * parseFloat(value.quant);
 
         })
 
-        console.log($scope.pedido.produtos)
-        });
+
+        if($scope.pedido.pedido_frete === '' && $scope.pedido.pedido_desconto === "" ){}
+        else if($scope.pedido.pedido_frete !== '' && $scope.pedido.pedido_desconto !== "" && $scope.pedido.pedido_frete !== "undefined" && $scope.pedido.pedido_desconto !== "undefined") {
+            var frete = parseFloat($scope.pedido.pedido_frete.replace(",", "."));
+            var desconto = parseFloat($scope.pedido.pedido_desconto.replace(",", "."));
+
+            console.log(desconto)
+            $scope.total+= (frete.toFixed(2) - desconto.toFixed(2));
+            $scope.total += 0;
+
+        }else if($scope.pedido.pedido_frete === '' && $scope.pedido.pedido_frete !== undefined){
+            var desconto = parseFloat($scope.pedido.pedido_desconto.replace(",", "."));
+            $scope.total -= (desconto.toFixed(2));
+            $scope.total += 0;
+        }
+
+        else if($scope.pedido.pedido_desconto === "" && $scope.pedido.pedido_desconto !== undefined) {
+            var frete = parseFloat($scope.pedido.pedido_frete.replace(",", "."));
+            $scope.total += (frete.toFixed(2))
+            $scope.total += 0;
+        }
+        else{
+            $scope.total += 0;
+        }
+
+        $scope.total = numberToReal($scope.total)
+    }
+
+    $scope.visualizarPDF = function () {
+
+        $http({
+
+            method: 'POST',
+            url: "/gtx/pedido/setUpdatePedido",
+            data: $.param({
+                id: $(".id-pedido").val(),
+                update: $scope.pedido,
+                delete: $scope.delete,
+                insert: $scope.insertImg,
+                insertCamisa: $scope.insertCamisa,
+                deleteCamisas: $scope.deleteCamisas
+
+            }),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+
+            $.notify({
+                // options
+                icon: '',
+                title: 'Os dados do pedido foram atualizados com sucesso',
+                url: 'https://github.com/mouse0270/bootstrap-notify',
+                target: '_blank'
+            },{
+                // settings
+                element: 'body',
+                position: null,
+                type: "success",
+                allow_dismiss: true,
+                newest_on_top: false,
+                showProgressbar: false,
+                placement: {
+                    from: "top",
+                    align: "right"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                url_target: '_blank',
+                mouse_over: null,
+                animate: {
+                    enter: 'animated fadeInDown',
+                    exit: 'animated fadeOutUp'
+                },
+                onShow: null,
+                onShown: null,
+                onClose: null,
+                onClosed: null,
+                icon_type: 'class',
+                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                '<span data-notify="icon"></span> ' +
+                '<span data-notify="title">{1}</span> ' +
+                '<span data-notify="message">{2}</span>' +
+                '<div class="progress" data-notify="progressbar">' +
+                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                '</div>' +
+                '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                '</div>'
+            });
+
+            var action = "/gtx/home/visualizarPDF/?id=" + $(".id-pedido").val();
+
+            console.log(action)
+
+            event.preventDefault();
+            var newForm = jQuery('<form>', {
+                'action': action,
+                'target': '_blank',
+                'method': 'post'
+            });
+            $(document.body).append(newForm);
+            newForm.submit();
+
+            if ($scope.status_chanced == true){
+                $http({
+
+                    method: 'POST',
+                    url: "/gtx/pedido/StatusChanged",
+                    data: $.param({
+                        id: $(".id-pedido").val(),
+                        pedido: $scope.pedido
+                    }),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+                }).then(function (response) {
+                    $scope.loader_send = false;
+
+                    $.notify({
+                        // options
+                        icon: '',
+                        title: 'Você alterou o status do pedido, um e-mail foi enviado para o cliente informando a alteração ',
+                        url: 'https://github.com/mouse0270/bootstrap-notify',
+                        target: '_blank'
+                    },{
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: "info",
+                        allow_dismiss: true,
+                        newest_on_top: false,
+                        showProgressbar: false,
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 5000,
+                        timer: 1000,
+                        url_target: '_blank',
+                        mouse_over: null,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                        onShow: null,
+                        onShown: null,
+                        onClose: null,
+                        onClosed: null,
+                        icon_type: 'class',
+                        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                        '<span data-notify="icon"></span> ' +
+                        '<span data-notify="title">{1}</span> ' +
+                        '<span data-notify="message">{2}</span>' +
+                        '<div class="progress" data-notify="progressbar">' +
+                        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                        '</div>' +
+                        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                        '</div>'
+                    });
+
+
+                })
+
+            }else{
+                $scope.loader_send = false;
+                // $timeout(function () {
+                //     window.location.href = "/gtx/home/pedidos";
+                // }, 2000);
+            }
+
+
+        })
+
+
+    }
+
+    $scope.GerarPDFPedido = function () {
+
+        $http({
+
+            method: 'POST',
+            url: "/gtx/pedido/setUpdatePedido",
+            data: $.param({
+                id: $(".id-pedido").val(),
+                update: $scope.pedido,
+                delete: $scope.delete,
+                insert: $scope.insertImg,
+                insertCamisa: $scope.insertCamisa,
+                deleteCamisas: $scope.deleteCamisas
+
+            }),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        }).then(function (response) {
+
+
+
+            $.notify({
+                // options
+                icon: '',
+                title: 'Os dados do pedido foram atualizados com sucesso',
+                url: 'https://github.com/mouse0270/bootstrap-notify',
+                target: '_blank'
+            },{
+                // settings
+                element: 'body',
+                position: null,
+                type: "success",
+                allow_dismiss: true,
+                newest_on_top: false,
+                showProgressbar: false,
+                placement: {
+                    from: "top",
+                    align: "right"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                url_target: '_blank',
+                mouse_over: null,
+                animate: {
+                    enter: 'animated fadeInDown',
+                    exit: 'animated fadeOutUp'
+                },
+                onShow: null,
+                onShown: null,
+                onClose: null,
+                onClosed: null,
+                icon_type: 'class',
+                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                '<span data-notify="icon"></span> ' +
+                '<span data-notify="title">{1}</span> ' +
+                '<span data-notify="message">{2}</span>' +
+                '<div class="progress" data-notify="progressbar">' +
+                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                '</div>' +
+                '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                '</div>'
+            });
+
+            var action = "/gtx/home/editPDF/?id=" + $(".id-pedido").val();
+
+            console.log(action)
+
+            event.preventDefault();
+            var newForm = jQuery('<form>', {
+                'action': action,
+                'target': '_blank',
+                'method': 'post'
+            });
+            $(document.body).append(newForm);
+            newForm.submit();
+
+            if ($scope.status_chanced == true){
+                $http({
+
+                    method: 'POST',
+                    url: "/gtx/pedido/StatusChanged",
+                    data: $.param({
+                        id: $(".id-pedido").val(),
+                        pedido: $scope.pedido
+                    }),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+                }).then(function (response) {
+                    $scope.loader_send = false;
+
+                    $.notify({
+                        // options
+                        icon: '',
+                        title: 'Você alterou o status do pedido, um e-mail foi enviado para o cliente informando a alteração ',
+                        url: 'https://github.com/mouse0270/bootstrap-notify',
+                        target: '_blank'
+                    },{
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: "info",
+                        allow_dismiss: true,
+                        newest_on_top: false,
+                        showProgressbar: false,
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 5000,
+                        timer: 1000,
+                        url_target: '_blank',
+                        mouse_over: null,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                        onShow: null,
+                        onShown: null,
+                        onClose: null,
+                        onClosed: null,
+                        icon_type: 'class',
+                        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                        '<span data-notify="icon"></span> ' +
+                        '<span data-notify="title">{1}</span> ' +
+                        '<span data-notify="message">{2}</span>' +
+                        '<div class="progress" data-notify="progressbar">' +
+                        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                        '</div>' +
+                        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                        '</div>'
+                    });
+
+
+                })
+
+            }else{
+                $scope.loader_send = false;
+                // $timeout(function () {
+                //     window.location.href = "/gtx/home/pedidos";
+                // }, 2000);
+            }
+
+
+        })
+
+
+    }
 
 $scope.updatePedido = function () {
 
@@ -797,9 +1405,9 @@ $scope.updatePedido = function () {
                         '<a href="{3}" target="{4}" data-notify="url"></a>' +
                         '</div>'
                     });
-                    // $timeout(function () {
-                    //     window.location.href = "/gtx/home/pedidos";
-                    // }, 2000);
+                     $timeout(function () {
+                         window.location.href = "/gtx/home/pedidos";
+                     }, 2000);
                 })
 
             }else{
@@ -902,7 +1510,7 @@ $scope.updatePedido = function () {
 
     }
 
-    $scope.addMoreCamisas = function (id) {
+    $scope.addMoreCamisas = function (id,prod,add) {
         $scope.insertCamisa.push({
             "camisa_nome": "",
             "camisa_tamanho": "",
@@ -911,17 +1519,25 @@ $scope.updatePedido = function () {
             "camisa_comentario": "",
             "produto_id": id
         })
+        if(add == false)
+        $scope.pedido.produtos[prod].quant++;
+
+        $scope.calcTotal()
 
     }
     $scope.deleteCamisa = function (id) {
 
         $scope.insertCamisa.splice(id, 1);
+        $scope.pedido.produtos[prod].quant--;
+        $scope.calcTotal()
 
     }
     $scope.deleteCamisaPrinc = function (id,prod,cam) {
 
         $scope.deleteCamisas.push({"camisa_id": id});
         $scope.pedido.produtos[prod].camisas.splice(cam, 1);
+        $scope.pedido.produtos[prod].quant--;
+        $scope.calcTotal()
 
     }
 
@@ -1364,6 +1980,8 @@ angular.module('app_landing').controller('pdf_ctrl', ['$scope', '$http','$timeou
             form.target = "_blank";
             document.body.appendChild(form);
             form.submit();
+
+
 
         })
         },100)

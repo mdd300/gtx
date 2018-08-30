@@ -426,6 +426,73 @@ class Home extends CI_Controller {
 
     }
 
+    public function visualizarPDF (){
+
+        $id = $_GET['id'];
+
+        $this->load->model("Pedido_model");
+        $this->load->model("Home_model");
+
+        $data = array();
+        $data["pedido"] = $this->Pedido_model->getPedido($id);
+        $data["cliente"] =$this->Home_model->getCliente_model( $data["pedido"]->cliente_id)[0];
+        $data["subtotal"] = 0.0;
+
+        $html = $this->load->view('pdf_pedido_visual',$data,TRUE);
+
+        // Instancia a classe mPDF
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'ut-8',
+            'format' => "A4",
+        ]);
+        // Ao invés de imprimir a view 'welcome_message' na tela, passa o código
+        // HTML dela para a variável $html
+        // Define um Cabeçalho para o arquivo PDF
+        $mpdf->SetHeader(array('odd' => array (
+            'L' => array (
+                'content' => '',
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000'
+            ),
+            'C' => array (
+                'content' => "  ",
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000',
+            ),
+            'R' => array (
+                'content' => '
+  <img style=\' height: 40px; width: 80px;\' src=\'https://gtxsports.com.br/wp-content/uploads/2017/07/gtxSports_blk.png\'>
+       ',
+                'font-size' => 10,
+                'font-style' => 'B',
+                'font-family' => 'serif',
+                'color'=>'#000000'
+            ),
+            'line' => 1,
+        ),
+            'even' => array ()));
+        // Define um rodapé para o arquivo PDF, nesse caso inserindo o número da
+        // página através da pseudo-variável PAGENO
+        $mpdf->SetFooter('{PAGENO}');
+        // Insere o conteúdo da variável $html no arquivo PDF
+        $mpdf->writeHTML($html);
+        // Cria uma nova página no arquivo
+        // Insere o conteúdo na nova página do arquivo PDF
+//        $mpdf->WriteHTML('<p><b>Minha nova página no arquivo PDF</b></p>');
+        // Gera o arquivo PDF
+
+        $pdf = uniqid().".pdf";
+        $mpdf->Output( );
+
+
+
+
+    }
+
     public function gerarPDF ($Data = null){
 
         if ($Data == null) {

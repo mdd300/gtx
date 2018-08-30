@@ -52,7 +52,7 @@ class Pedido extends CI_Controller {
 
         }
 
-        $retorno = true;
+        $retorno = $pedido;
 
         if ($Output == true) {
             echo json_encode($retorno);
