@@ -492,6 +492,26 @@ class Home extends CI_Controller {
 
 
     }
+    public function gerarPDF2 (){
+
+        $id = $_GET['id'];
+
+        $this->load->model("Pedido_model");
+
+        $pdf = $this->Pedido_model->getPDF_Model($id);
+
+        if($pdf->num_rows() > 0) {
+            $pdf = $pdf->result()[0];
+            $this->load->helper('download');
+            if ($pdf->pdf_nome) {
+                $data = file_get_contents('./upload/pdf/' . $pdf->pdf_nome);
+            }
+            $name = $pdf->pdf_nome;
+            force_download($name, $data);
+        }else{
+            $this->visualizarPDF();
+        }
+    }
 
     public function gerarPDF ($Data = null){
 
