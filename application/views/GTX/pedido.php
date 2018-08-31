@@ -3,22 +3,25 @@
 
     $(function(){
         $('#frete').keyup(function(evt){
-            console.log($(this).val())
-            if ($(this).val() == '') {
-                $(this).val(0);
+            if ($(this).val() !== '') {
+                return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+
+
             }
             else
-                return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+                $(this).val(0);
         })
     });
 
     $(function(){
         $('#desconto').keyup(function(evt){
-            if ($(this).val() == '') {
-                $(this).val(0);
+            if ($(this).val() !== '') {
+                return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+
             }
             else
-                return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+                $(this).val(0);
+
         })
     });
 </script>
