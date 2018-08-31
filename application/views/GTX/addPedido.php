@@ -8,7 +8,7 @@
     $(function(){
         $('#frete').keyup(function(evt){
             console.log($(this).val().length )
-            if ($(this).val().length === 0) {
+            if ($(this).val() === '') {
                 $(this).val(0);
             }
             else
@@ -18,7 +18,7 @@
 
     $(function(){
         $('#desconto').keyup(function(evt){
-            if ($(this).val().length === 0) {
+            if ($(this).val() === '') {
                 $(this).val(0);
             }
             else
