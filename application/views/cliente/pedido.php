@@ -1,3 +1,22 @@
+
+<script>
+
+
+
+    $(function(){
+        $('#frete').keypress(function(evt){
+            return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+        })
+    });
+
+    $(function(){
+        $('#desconto').keypress(function(evt){
+            return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+        })
+    });
+
+
+</script>
 <div class="content" ng-controller="pedido_ctrl">
 
     <div class="container-fluid">
@@ -26,13 +45,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Valor do frete</label>
-                                        <input disabled id="frete" type="text" class="form-control" placeholder="Valor do frete" value="{{pedido.pedido_frete}}">
+                                        <input disabled id="frete" type="number" class="form-control" placeholder="Valor do frete" value="{{pedido.pedido_frete}}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label >desconto</label>
-                                        <input disabled id="desconto" type="text" class="form-control" placeholder="Desconto" value="{{pedido.pedido_desconto}}">
+                                        <label >Desconto</label>
+                                        <input disabled id="desconto" type="number" class="form-control" placeholder="Desconto" value="{{pedido.pedido_desconto}}">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -202,21 +221,90 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-info btn-fill pull-right" ng-click="updatePedido()"
-                                    style="text-align: center;
+                    <div class="col-md-12">
+                        <h2 style="float: right"><b>Total: </b> {{total}}</h2>
+                    </div>
+                    <button class="btn btn-info btn-fill pull-right" ng-click="updatePedido()"
+                            style="text-align: center;
                                     display: flex;
-                                    align-items: center;" >
-                                <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
-                                    <div class="loader-all" id="loader-1"></div>
-                                </div>Salvar
-                            </button>
+                                    align-items: center;margin: 10px" >
+                        <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
+                            <div class="loader-all" id="loader-1"></div>
+                        </div>Salvar
+                    </button>
+                    <button class="btn btn-danger btn-fill pull-right"
+                            style="text-align: center;
+                                    display: flex;
+                                    align-items: center;margin: 10px" data-toggle="modal" data-target="#visualizar">
+                        <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
+                            <div class="loader-all" id="loader-1"></div>
+                        </div>Visualizar
+                    </button>
+                    <button class="btn btn-warning btn-fill pull-right"
+                            style="text-align: center;
+                                    display: flex;
+                                    align-items: center;margin: 10px" data-toggle="modal" data-target="#Gerar">
+                        <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
+                            <div class="loader-all" id="loader-1"></div>
+                        </div>Gerar PDF
+                    </button>
                             <div class="clearfix"></div>
                         </form>
                     </div>
                 </div>
             </div>
+        <style>
+            .modal-backdrop {
+                position: initial;
+                z-index: 1040 !important;
+            }
+            .modal-dialog {
+                z-index: 1100 !important;
+            }
+        </style>
+        <div class="modal fade" id="visualizar" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Salvar o Pedido?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>É preciso salvar o pedido para gerar o PDF, deseja salvar?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-success" ng-click="visualizarPDF()">Salvar</button>
+                    </div>
 
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="Gerar" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Salvar o Pedido</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>É preciso salvar o pedido para gerar o PDF, deseja salvar?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-success" ng-click="GerarPDFPedido()">Salvar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         </div>
     </div>
 </div>

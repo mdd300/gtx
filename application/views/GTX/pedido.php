@@ -1,3 +1,22 @@
+
+<script>
+
+
+
+    $(function(){
+        $('#frete').keypress(function(evt){
+            return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+        })
+    });
+
+    $(function(){
+        $('#desconto').keypress(function(evt){
+            return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+        })
+    });
+
+
+</script>
 <div class="content" ng-controller="pedido_ctrl">
 
     <div class="container-fluid">
@@ -26,13 +45,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Valor do frete</label>
-                                            <input  id="frete" ng-change="calcTotal()" type="text" class="form-control" placeholder="Valor do frete" ng-model="pedido.pedido_frete">
+                                            <input  id="frete" ng-change="calcTotal()" type="number" class="form-control" placeholder="Valor do frete" ng-model="pedido.pedido_frete">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label >Desconto</label>
-                                            <input  id="desconto" ng-change="calcTotal()" type="text" class="form-control" placeholder="Desconto" ng-model="pedido.pedido_desconto">
+                                            <input  id="desconto" ng-change="calcTotal()" type="number" class="form-control" placeholder="Desconto" ng-model="pedido.pedido_desconto">
                                         </div>
                                     </div>
                                 <div class="col-md-12">
@@ -227,6 +246,7 @@
                                                     <div class="col-md-3 bg loader-img" style="display: none;     padding: 0 !important; width: auto; height: auto;">
                                                         <div class="loader" id="loader-1"></div>
                                                     </div>
+                                                    <div ng-click="deleteImgPed($parent.$index,$index)" style="position: absolute; top: 10px; right: 20px;color: blue; font-size: 3rem;z-index: 111111111" ng-if="($index + 1) !== insertImg.length" style="position: absolute; top: 10px; right: 20px;color: blue; font-size: 3rem">X</div>
                                                 </label>
 
                                             </div>
@@ -332,30 +352,3 @@
     </div>
     </div>
 </div>
-
-<script>
-
-    var mask = {
-        money: function() {
-            var el = this
-                ,exec = function(v) {
-                v = v.replace(/\D/g,"");
-                v = new String(Number(v));
-                var len = v.length;
-                if (1== len)
-                    v = v.replace(/(\d)/,"0,$1");
-                else if (len > 1) {
-                    v = v.replace(/(\d{2})$/,',$1');
-                }
-                return v;
-            };
-
-            setTimeout(function(){
-                el.value = exec(el.value);
-            },1);
-        }
-
-    }
-
-
-</script>

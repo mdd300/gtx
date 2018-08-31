@@ -478,6 +478,10 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
         }
     }
 
+    $scope.deleteImgPed = function (prod,id) {
+        $scope.produtos[prod].imgs.splice(id,1)
+    }
+
     $scope.addMoreProd = function () {
         $scope.produtos.push({
             "produto_nome": "",
@@ -567,25 +571,27 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
             $scope.total = parseFloat(preco) * parseFloat(value.quant);
 
         })
-        if($scope.dataPedido.pedido_frete === '' && $scope.dataPedido.pedido_desconto === "" ){}
-        else if($scope.dataPedido.pedido_frete !== '' && $scope.dataPedido.pedido_desconto !== "" && $scope.dataPedido.pedido_frete !== "undefined" && $scope.dataPedido.pedido_desconto !== "undefined") {
+        if($scope.dataPedido.pedido_frete === '' && $scope.dataPedido.pedido_desconto === '' || $scope.dataPedido.pedido_frete === undefined && $scope.dataPedido.pedido_desconto === undefined || $scope.dataPedido.pedido_frete === "undefined" && $scope.dataPedido.pedido_desconto === "undefined"|| $scope.dataPedido.pedido_frete === null && $scope.dataPedido.pedido_desconto === null  ){}
+        else if($scope.dataPedido.pedido_frete !== "" && $scope.dataPedido.pedido_desconto !== "" && $scope.dataPedido.pedido_frete !== "undefined" && $scope.dataPedido.pedido_desconto !== "undefined" && $scope.dataPedido.pedido_frete !== null && $scope.dataPedido.pedido_desconto !== null) {
 
-            $scope.total+= ($scope.dataPedido.pedido_frete - $scope.dataPedido.pedido_desconto);
+            $scope.total+= ($scope.dataPedido.pedido_frete );
+            $scope.total -= $scope.dataPedido.pedido_desconto;
             $scope.total += 0;
 
-        }else if($scope.dataPedido.pedido_frete === '' && $scope.dataPedido.pedido_frete !== undefined){
+
+        }else if($scope.dataPedido.pedido_frete === '' || $scope.dataPedido.pedido_frete === null || $scope.dataPedido.pedido_frete === "undefined"){
             $scope.total -= ($scope.dataPedido.pedido_desconto);
             $scope.total += 0;
         }
 
-        else if($scope.dataPedido.pedido_desconto === "" && $scope.dataPedido.pedido_desconto !== undefined) {
+        else if($scope.dataPedido.pedido_desconto === "" || $scope.dataPedido.pedido_desconto === null || $scope.dataPedido.pedido_desconto === "undefined") {
             $scope.total += ($scope.dataPedido.pedido_frete)
             $scope.total += 0;
+
         }
         else{
             $scope.total += 0;
         }
-
         $scope.total = numberToReal($scope.total)
     }
 
@@ -618,7 +624,7 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
         }).then(function (response) {
 
             $scope.loader_send = false;
-            var action = "/gtx/home/visualizarPDF/?id=" + response.data;
+            var action = "/gtx/home/gerarPDF2/?id=" + response.data;
             event.preventDefault();
             var newForm = jQuery('<form>', {
                 'action': action,
@@ -901,10 +907,16 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
             }
 
         })
+
+        $scope.pedido.pedido_frete = parseFloat($scope.pedido.pedido_frete.replace(",", "."))
+        $scope.pedido.pedido_desconto = parseFloat($scope.pedido.pedido_desconto.replace(",", "."))
+
         $scope.calcTotal()
 
         });
-
+    $scope.deleteImgPed = function (id) {
+        $scope.insertImg.splice(id,1)
+    }
 
     $scope.quantidadeCam = function (id,prod) {
         console.log($("#quantidade-"+id).val())
@@ -941,28 +953,34 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
         })
 
 
-        if($scope.pedido.pedido_frete === '' && $scope.pedido.pedido_desconto === "" ){}
-        else if($scope.pedido.pedido_frete !== '' && $scope.pedido.pedido_desconto !== "" && $scope.pedido.pedido_frete !== "undefined" && $scope.pedido.pedido_desconto !== "undefined") {
-            var frete = parseFloat($scope.pedido.pedido_frete.replace(",", "."));
-            var desconto = parseFloat($scope.pedido.pedido_desconto.replace(",", "."));
+        if($scope.pedido.pedido_frete === '' && $scope.pedido.pedido_desconto === '' || $scope.pedido.pedido_frete === undefined && $scope.pedido.pedido_desconto === undefined || $scope.pedido.pedido_frete === "undefined" && $scope.pedido.pedido_desconto === "undefined"|| $scope.pedido.pedido_frete === null && $scope.pedido.pedido_desconto === null  ){
 
-            console.log(desconto)
-            $scope.total+= (frete.toFixed(2) - desconto.toFixed(2));
+        }
+        else if($scope.pedido.pedido_frete !== "" && $scope.pedido.pedido_desconto !== "" && $scope.pedido.pedido_frete !== "undefined" && $scope.pedido.pedido_desconto !== "undefined" && $scope.pedido.pedido_frete !== undefined && $scope.pedido.pedido_desconto !== undefined && $scope.pedido.pedido_frete !== null && $scope.pedido.pedido_desconto !== null) {
+
+            $scope.total+= parseFloat($scope.pedido.pedido_frete );
+            $scope.total -= parseFloat($scope.pedido.pedido_desconto);
+            $scope.total += 0;
+            console.log($scope.pedido.pedido_frete )
+
+
+
+        }else if($scope.pedido.pedido_frete === 0 || $scope.pedido.pedido_frete === '' || $scope.pedido.pedido_frete === null || $scope.pedido.pedido_frete === "undefined"){
+            $scope.total -= parseFloat($scope.pedido.pedido_desconto);
             $scope.total += 0;
 
-        }else if($scope.pedido.pedido_frete === '' && $scope.pedido.pedido_frete !== undefined){
-            var desconto = parseFloat($scope.pedido.pedido_desconto.replace(",", "."));
-            $scope.total -= (desconto.toFixed(2));
-            $scope.total += 0;
         }
 
-        else if($scope.pedido.pedido_desconto === "" && $scope.pedido.pedido_desconto !== undefined) {
-            var frete = parseFloat($scope.pedido.pedido_frete.replace(",", "."));
-            $scope.total += (frete.toFixed(2))
+        else if($scope.pedido.pedido_desconto === 0 || $scope.pedido.pedido_desconto === "" || $scope.pedido.pedido_desconto === null || $scope.pedido.pedido_desconto === "undefined") {
+            $scope.total += parseFloat($scope.pedido.pedido_frete )
             $scope.total += 0;
+
+
         }
         else{
             $scope.total += 0;
+
+
         }
 
         $scope.total = numberToReal($scope.total)
@@ -1034,7 +1052,7 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
                 '</div>'
             });
 
-            var action = "/gtx/home/visualizarPDF/?id=" + $(".id-pedido").val();
+            var action = "/gtx/home/gerarPDF2/?id=" + $(".id-pedido").val();
 
             console.log(action)
 
@@ -1412,9 +1430,9 @@ $scope.updatePedido = function () {
 
             }else{
                 $scope.loader_send = false;
-                // $timeout(function () {
-                //     window.location.href = "/gtx/home/pedidos";
-                // }, 2000);
+                $timeout(function () {
+                    window.location.href = "/gtx/home/pedidos";
+                }, 2000);
             }
 
 

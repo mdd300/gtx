@@ -507,7 +507,12 @@ class Home extends CI_Controller {
                 $data = file_get_contents('./upload/pdf/' . $pdf->pdf_nome);
             }
             $name = $pdf->pdf_nome;
-            force_download($name, $data);
+            $filename = './upload/pdf/'.$pdf->pdf_nome;
+            header("Content-type: application/pdf");
+            header("Content-Length: " . filesize($filename));
+
+            readfile($filename);
+
         }else{
             this.$this->visualizarPDF();
         }
