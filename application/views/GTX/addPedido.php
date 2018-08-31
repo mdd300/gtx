@@ -7,11 +7,11 @@
 
     $(function(){
         $('#frete').keyup(function(evt){
-            console.log($(this).val())
-            if ($(this).val() === '') {
-                $(this).val(0);
-            }
-            else
+            // console.log($(this).val())
+            // if ($(this).val() === '') {
+            //     $(this).val(0);
+            // }
+            // else
                 return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
         })
     });
