@@ -5,16 +5,24 @@
 
     $(function(){
         $('#frete').keypress(function(evt){
+            console.log()
+            if ($(this).val(.length === 0) {
+                $(this).val();
+            }
+            else
             return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
         })
     });
 
     $(function(){
         $('#desconto').keypress(function(evt){
+            if ($("#desconto").val().trim().length === 0) {
+                $("#desconto").val(0);
+            }
+            else
             return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
         })
     });
-
 
 </script>
 <div class="content" ng-controller="pedido_ctrl">

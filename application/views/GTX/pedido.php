@@ -1,20 +1,26 @@
 
 <script>
 
-
-
     $(function(){
-        $('#frete').keypress(function(evt){
-            return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+        $('#frete').keyup(function(evt){
+            console.log($(this).val().length )
+            if ($(this).val().length === 0) {
+                $(this).val(0);
+            }
+            else
+                return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
         })
     });
 
     $(function(){
-        $('#desconto').keypress(function(evt){
-            return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+        $('#desconto').keyup(function(evt){
+            if ($(this).val().length === 0) {
+                $(this).val(0);
+            }
+            else
+                return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
         })
     });
-
 
 </script>
 <div class="content" ng-controller="pedido_ctrl">
@@ -45,13 +51,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Valor do frete</label>
-                                            <input  id="frete" ng-change="calcTotal()" type="number" class="form-control" placeholder="Valor do frete" ng-model="pedido.pedido_frete">
+                                            <input  id="frete" min="0" ng-change="calcTotal()" type="number" class="form-control" placeholder="Valor do frete" ng-model="pedido.pedido_frete">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label >Desconto</label>
-                                            <input  id="desconto" ng-change="calcTotal()" type="number" class="form-control" placeholder="Desconto" ng-model="pedido.pedido_desconto">
+                                            <input  id="desconto" min="0" ng-change="calcTotal()" type="number" class="form-control" placeholder="Desconto" ng-model="pedido.pedido_desconto">
                                         </div>
                                     </div>
                                 <div class="col-md-12">

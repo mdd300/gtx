@@ -4,17 +4,28 @@
 <script>
 
 
+
     $(function(){
-        $('#frete').keypress(function(evt){
-            return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+        $('#frete').keyup(function(evt){
+            console.log($(this).val().length )
+            if ($(this).val().length === 0) {
+                $(this).val(0);
+            }
+            else
+                return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
         })
     });
 
     $(function(){
-        $('#desconto').keypress(function(evt){
-            return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
+        $('#desconto').keyup(function(evt){
+            if ($(this).val().length === 0) {
+                $(this).val(0);
+            }
+            else
+                return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
         })
     });
+
 </script>
 <div class="content" ng-controller="addPedido_ctrl">
     <div class="container-fluid">
@@ -45,13 +56,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Valor do frete</label>
-                                        <input name="cliente_username" id="frete" ng-change="calcTotal()" type="number" class="form-control" placeholder="Valor do frete" ng-model="dataPedido.pedido_frete">
+                                        <input name="cliente_username" min="0" id="frete" ng-change="calcTotal()" type="number" class="form-control" placeholder="Valor do frete" ng-model="dataPedido.pedido_frete">
                                     </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label >Desconto</label>
-                                        <input name="cliente_email" id="desconto" ng-change="calcTotal()" type="number" class="form-control" placeholder="Desconto" ng-model="dataPedido.pedido_desconto">
+                                        <input name="cliente_email" min="0" id="desconto" ng-change="calcTotal()" type="number" class="form-control" placeholder="Desconto" ng-model="dataPedido.pedido_desconto">
                                     </div>
                                 </div>
                             </div>

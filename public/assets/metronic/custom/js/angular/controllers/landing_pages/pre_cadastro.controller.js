@@ -245,7 +245,6 @@ angular.module('app_landing').controller('updateCliente_ctrl', ['$scope', '$http
 
     }).then(function (response) {
 
-        console.log(response.data)
 
         $scope.cliente = response.data;
 
@@ -406,7 +405,6 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
 
                         $scope.produtos[targ.getAttribute("index-prod")].variantes_produto = response.data.produto_variantes;
                         $scope.produtos[targ.getAttribute("index-prod")].produto_preco = response.data.produto_preco
-                        console.log($scope.produtos[targ.getAttribute("index-prod")])
 
                         $scope.calcTotal()
 
@@ -919,7 +917,6 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
     }
 
     $scope.quantidadeCam = function (id,prod) {
-        console.log($("#quantidade-"+id).val())
 
         if($("#quantidade-"+id).val() > $scope.pedido.produtos[id].camisas.length){
 
@@ -961,7 +958,6 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
             $scope.total+= parseFloat($scope.pedido.pedido_frete );
             $scope.total -= parseFloat($scope.pedido.pedido_desconto);
             $scope.total += 0;
-            console.log($scope.pedido.pedido_frete )
 
 
 
@@ -1054,7 +1050,6 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
 
             var action = "/gtx/home/gerarPDF2/?id=" + $(".id-pedido").val();
 
-            console.log(action)
 
             event.preventDefault();
             var newForm = jQuery('<form>', {
@@ -1210,7 +1205,6 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
 
             var action = "/gtx/home/editPDF/?id=" + $(".id-pedido").val();
 
-            console.log(action)
 
             event.preventDefault();
             var newForm = jQuery('<form>', {
@@ -1460,7 +1454,6 @@ $scope.updatePedido = function () {
             var content = $(input).parent('.label-img-pedido');
             var more = content.find(".more-img")
 
-            console.log(content)
 
             more.css("display", "none");
 
@@ -1485,7 +1478,6 @@ $scope.updatePedido = function () {
 
                     $(input).remove();
 
-                    console.log(content.find("#img-element")[0])
                     var vanilla = new Croppie(content.find("#img-element")[0], {
                         viewport: { width: 200, height: 200 },
                         showZoomer: true,
@@ -1501,7 +1493,6 @@ $scope.updatePedido = function () {
 
                 });
 
-                console.log(content.find(".parent-index-img").val())
 
                 $scope.insertImg.push({
                         "produto_id": $scope.pedido.produtos[content.find(".parent-index-img").val()].produto_id,
@@ -1510,7 +1501,6 @@ $scope.updatePedido = function () {
                     }
                 })
 
-                console.log($scope.insertImg);
 
                 $scope.$apply();
 
@@ -1635,7 +1625,6 @@ angular.module('app_landing').controller('pedidosCliente_ctrl', ['$scope', '$htt
 
         $scope.pedidos = response.data;
 
-        console.log($scope.pedidos)
         $timeout(function () {
             $('#pedidoTable').DataTable();
         }, 500);
@@ -2110,7 +2099,6 @@ angular.module('app_landing').controller('addUser_ctrl', ['$scope', '$http','$ti
         }).then(function (response) {
 
             $scope.user = response.data[0]
-            console.log($scope.user)
         })
         }
 
