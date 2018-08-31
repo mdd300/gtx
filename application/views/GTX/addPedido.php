@@ -7,7 +7,7 @@
 
     $(function(){
         $('#frete').keyup(function(evt){
-            console.log($(this).val().length )
+            console.log($(this).val())
             if ($(this).val() === '') {
                 $(this).val(0);
             }

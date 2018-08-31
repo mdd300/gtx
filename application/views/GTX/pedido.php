@@ -3,8 +3,8 @@
 
     $(function(){
         $('#frete').keyup(function(evt){
-            console.log($(this).val().length )
-            if ($(this).val().length === 0) {
+            console.log($(this).val())
+            if ($(this).val() == '') {
                 $(this).val(0);
             }
             else
@@ -14,14 +14,13 @@
 
     $(function(){
         $('#desconto').keyup(function(evt){
-            if ($(this).val().length === 0) {
+            if ($(this).val() == '') {
                 $(this).val(0);
             }
             else
                 return (/^[0-9]*\.?[0-9]*$/).test($(this).val()+evt.key);
         })
     });
-
 </script>
 <div class="content" ng-controller="pedido_ctrl">
 
