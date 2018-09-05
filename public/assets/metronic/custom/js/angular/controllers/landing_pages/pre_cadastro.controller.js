@@ -607,6 +607,8 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
                     "camisa_comentario": "",
                 })
             }
+            $scope.calcTotal()
+
 
             // $scope.addMoreCamisas(id, true);
 
@@ -959,6 +961,7 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
                         "camisa_comentario": "",
                     })
                 }
+                $scope.calcTotal()
 
                 // $scope.addMoreCamisas(id, true);
 
