@@ -19,7 +19,7 @@
                                         <div class="author">
                                                 <img ng-if="pedido.produtos[0].imgs.length > 0" class="avatar border-gray" src="<?= base_url('upload/produtos/img/' )?>{{pedido.produtos[0].imgs[0].src}}" alt="..."/>
                                                 <div ng-if="pedido.produtos[0].imgs.length == 0" class="" style="width: 120px; height: 140px" alt="..."></div>
-                                                <h4 class="title">Pedido numero {{pedido.pedido_id}}<br />
+                                                <h4 class="title">Pedido N˚: {{pedido.pedido_id}}<br />
                                                 </h4>
                                         </div>
                                         <p class="description text-center"> Status: {{pedido.pedido_status}}<br>
