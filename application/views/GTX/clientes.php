@@ -181,7 +181,7 @@
                             <td>{{pedido.cliente_email}}</td>
                             <td>{{pedido.pedido_data}}</td>
                             <td>
-                                <a id="popoverData" target="_blank" href="<?=base_url()?>pedido/gerarPDF2/?id={{pedido.pedido_id}}"  data-content="Editar dados do cliente" rel="popover" data-original-title="Editar"><img style="    height: 12px;
+                                <a id="popoverData" target="_blank" href="<?=base_url()?>home/gerarPDF2/?id={{pedido.pedido_id}}"  data-content="Editar dados do cliente" rel="popover" data-original-title="Editar"><img style="    height: 12px;
     width: 12px;" src="<?=base_url("public/assets/metronic/custom/img/icon/pdf.png")?>"></a>
                                 <a id="popoverData" href="<?=base_url()?>pedido/updatePedido/?id={{pedido.pedido_id}}"  data-content="Editar dados do cliente" rel="popover" data-original-title="Editar"><i style="cursor: pointer" class="pe-7s-note"></i></a>
                             </td>
