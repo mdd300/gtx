@@ -51,7 +51,7 @@
 
         <div class="sidebar-wrapper" style="background-color: #4682B4">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
+                <a href="" class="simple-text">
                     <b>GTX</b> Sports <?=$tipo?>
                 </a>
             </div>
