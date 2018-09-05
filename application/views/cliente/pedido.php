@@ -159,6 +159,12 @@
                                                 <label style="cursor: pointer;" ng-click="deleteCamisaPrinc(camisa.camisa_id,$parent.$index, $index)">X</label>
                                             </div>
                                         </div>
+                                        <div class="col-md-3" ng-if="produto.variacao_selected != true">
+                                            <div class="form-group">
+<!--                                                <input name="camisa_short" ng-model="camisa.camisa_short" type="text" class="form-control" placeholder="{{produto.variacao_unidade}}" >-->
+                                            </div>
+                                        </div>
+
 
                                     </div>
                                     <div ng-repeat="camisa in insertCamisa | filter : {produto_id: produto.produto_id}">

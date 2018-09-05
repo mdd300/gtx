@@ -123,4 +123,8 @@ class Produtos_model extends CI_Model {
 
     }
 
+    public function deleteProduto_model($id){
+        return $this->db->delete("tb_categorias",["categoria_id" => $id]);
+    }
+
 }

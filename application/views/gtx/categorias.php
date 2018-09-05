@@ -13,7 +13,9 @@
                                     <input type="text" ng-model="categoriaAdd.categoria_nome" placeholder="Digite a categoria">
                             <a style="padding-left: 5px" ng-click="setCategoria()">
                                 <button type="button" class="btn btn-primary" style="    padding: 8px 15px;display: flex;align-items: center;">
-                                    Adicionar
+                                    <div ng-show="loader_send" class="col-md-3 bg loader-img" style="  margin-right: 10px;   padding: 0 !important; width: auto; height: auto;">
+                                        <div class="loader-all" id="loader-1"></div>
+                                    </div>Adicionar
                                 </button>
                             </a>
                             </div>
@@ -27,11 +29,14 @@
                                 <thead>
                                 <tr>
                                     <th>Categoria</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="categoria in categorias">
                                     <td>{{categoria.categoria_nome}}</td>
+                                    <td><a ng-click="excluiCat(categoria.categoria_id)"><i class="pe-7s-trash"></i></a></td>
+
                                 </tr>
                                 </tbody>
                                 <tfoot>

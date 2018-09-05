@@ -47,7 +47,7 @@ class Home extends CI_Controller {
         }
         $session = $this->session->userdata("fashon_session");
         $this->load->model("Cliente_model");
-        $retorno = $this->Cliente_model->getPedidos_model($session)->result();
+        $retorno = $this->Cliente_model->getPedidos_model($session);
 
         if ($Output == true) {
             echo json_encode($retorno);
@@ -514,7 +514,7 @@ class Home extends CI_Controller {
             readfile($filename);
 
         }else{
-            this.$this->visualizarPDF();
+            $this->visualizarPDF();
         }
     }
 

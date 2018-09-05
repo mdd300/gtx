@@ -70,6 +70,24 @@ class Produto extends CI_Controller {
         }
     }
 
+    public function deleteCategorias($Data = null){
+        if ($Data == null) {
+            $Output = true;
+            $Data = $this->input->post();
+        } else {
+            $Output = false;
+        }
+
+        $this->load->model("Produtos_model");
+        $retorno = $this->Produtos_model->deleteProduto_model($Data["id"]);
+
+        if ($Output == true) {
+            echo json_encode($retorno);
+        } else {
+            return $retorno;
+        }
+    }
+
     public function getProduto($Data = null){
         if ($Data == null) {
             $Output = true;

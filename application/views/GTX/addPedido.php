@@ -281,7 +281,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-success" ng-click="visualizarPDF()">Salvar</button>
+                        <button type="button" class="btn btn-success" ng-click="visualizarPDF()">Salvar e visualizar</button>
                     </div>
 
                 </div>
@@ -304,7 +304,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-success" ng-click="GerarPDFPedido()">Salvar</button>
+                        <button type="button" class="btn btn-success" ng-click="GerarPDFPedido()">Salvar e gerar</button>
                     </div>
                 </div>
 

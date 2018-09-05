@@ -322,11 +322,11 @@
                         <h4 class="modal-title">Salvar o Pedido?</h4>
                     </div>
                     <div class="modal-body">
-                        <p>É preciso salvar o pedido para gerar o PDF, deseja salvar?</p>
+                        <p>É preciso salvar o pedido para visualizar o PDF, deseja salvar?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-success" ng-click="visualizarPDF()">Salvar</button>
+                        <button type="button" class="btn btn-success" ng-click="visualizarPDF()">Salvar e visualizar</button>
                     </div>
 
                 </div>
@@ -349,7 +349,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-success" ng-click="GerarPDFPedido()">Salvar</button>
+                        <button type="button" class="btn btn-success" ng-click="GerarPDFPedido()">Salvar e gerar</button>
                     </div>
                 </div>
 

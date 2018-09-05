@@ -596,8 +596,19 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
     $scope.quantidadeCam = function (id) {
 
         if($("#quantidade-"+id).val() > $scope.produtos[id].camisas.length){
+            var quant = $("#quantidade-"+id).val() - $scope.produtos[id].camisas.length - 1
+            var i;
+            for(i = 0; parseInt(quant) >= i; i++){
+                $scope.produtos[id].camisas.push({
+                    "camisa_nome": "",
+                    "camisa_tamanho": "",
+                    "camisa_numero": "",
+                    "camisa_short": "",
+                    "camisa_comentario": "",
+                })
+            }
 
-            $scope.addMoreCamisas(id, true);
+            // $scope.addMoreCamisas(id, true);
 
         }else if($("#quantidade-"+id).val() == ""){
 
@@ -610,160 +621,172 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
     }
 
     $scope.visualizarPDF = function () {
-        $scope.loader_send = true;
+        if ($scope.loader_send == false) {
 
-        $http({
+            $scope.loader_send = true;
 
-            method: 'POST',
-            url: "/gtx/pedido/setPedido",
-            data: $.param({produtos: $scope.produtos, id: $(".id-cliente").val(), variantes: $scope.dataProduto, pedido:$scope.dataPedido}),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+            $http({
 
-        }).then(function (response) {
+                method: 'POST',
+                url: "/gtx/pedido/setPedido",
+                data: $.param({
+                    produtos: $scope.produtos,
+                    id: $(".id-cliente").val(),
+                    variantes: $scope.dataProduto,
+                    pedido: $scope.dataPedido
+                }),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
-            $scope.loader_send = false;
-            var action = "/gtx/home/gerarPDF2/?id=" + response.data;
-            event.preventDefault();
-            var newForm = jQuery('<form>', {
-                'action': action,
-                'target': '_blank',
-                'method': 'post'
-            });
-            $(document.body).append(newForm);
-            newForm.submit();
+            }).then(function (response) {
 
-            $.notify({
-                // options
-                icon: '',
-                title: 'O Pedido foi criado com sucesso',
-                url: 'https://github.com/mouse0270/bootstrap-notify',
-                target: '_blank'
-            },{
-                // settings
-                element: 'body',
-                position: null,
-                type: "success",
-                allow_dismiss: true,
-                newest_on_top: false,
-                showProgressbar: false,
-                placement: {
-                    from: "top",
-                    align: "right"
-                },
-                offset: 20,
-                spacing: 10,
-                z_index: 1031,
-                delay: 5000,
-                timer: 1000,
-                url_target: '_blank',
-                mouse_over: null,
-                animate: {
-                    enter: 'animated fadeInDown',
-                    exit: 'animated fadeOutUp'
-                },
-                onShow: null,
-                onShown: null,
-                onClose: null,
-                onClosed: null,
-                icon_type: 'class',
-                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                '<span data-notify="icon"></span> ' +
-                '<span data-notify="title">{1}</span> ' +
-                '<span data-notify="message">{2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                '</div>' +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                '</div>'
-            });
-            $timeout(function () {
-                window.location.href = "/gtx/pedido/updatePedido/?id="+response.data;
-            }, 2000);
-        })
+                var action = "/gtx/home/gerarPDF2/?id=" + response.data;
+                event.preventDefault();
+                var newForm = jQuery('<form>', {
+                    'action': action,
+                    'target': '_blank',
+                    'method': 'post'
+                });
+                $(document.body).append(newForm);
+                newForm.submit();
 
+                $.notify({
+                    // options
+                    icon: '',
+                    title: 'O Pedido foi criado com sucesso',
+                    url: 'https://github.com/mouse0270/bootstrap-notify',
+                    target: '_blank'
+                }, {
+                    // settings
+                    element: 'body',
+                    position: null,
+                    type: "success",
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    showProgressbar: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: null,
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutUp'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class',
+                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                    '<span data-notify="icon"></span> ' +
+                    '<span data-notify="title">{1}</span> ' +
+                    '<span data-notify="message">{2}</span>' +
+                    '<div class="progress" data-notify="progressbar">' +
+                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                    '</div>' +
+                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                    '</div>'
+                });
+                $timeout(function () {
+                    window.location.href = "/gtx/pedido/updatePedido/?id=" + response.data;
+                }, 2000);
+            })
 
+        }
 
 
 
     }
 
     $scope.GerarPDFPedido = function () {
-        $scope.loader_send = true;
+        if ($scope.loader_send == false) {
 
-        $http({
+            $scope.loader_send = true;
 
-            method: 'POST',
-            url: "/gtx/pedido/setPedido",
-            data: $.param({produtos: $scope.produtos, id: $(".id-cliente").val(), variantes: $scope.dataProduto, pedido:$scope.dataPedido}),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+            $http({
 
-        }).then(function (response) {
+                method: 'POST',
+                url: "/gtx/pedido/setPedido",
+                data: $.param({
+                    produtos: $scope.produtos,
+                    id: $(".id-cliente").val(),
+                    variantes: $scope.dataProduto,
+                    pedido: $scope.dataPedido
+                }),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
-            $scope.loader_send = false;
-            var action = "/gtx/home/editPDF/?id=" +  response.data;
+            }).then(function (response) {
 
-
-            event.preventDefault();
-            var newForm = jQuery('<form>', {
-                'action': action,
-                'target': '_blank',
-                'method': 'post'
-            });
-            $(document.body).append(newForm);
-            newForm.submit();
-            //
-            $.notify({
-                // options
-                icon: '',
-                title: 'O Pedido foi criado com sucesso',
-                url: 'https://github.com/mouse0270/bootstrap-notify',
-                target: '_blank'
-            },{
-                // settings
-                element: 'body',
-                position: null,
-                type: "success",
-                allow_dismiss: true,
-                newest_on_top: false,
-                showProgressbar: false,
-                placement: {
-                    from: "top",
-                    align: "right"
-                },
-                offset: 20,
-                spacing: 10,
-                z_index: 1031,
-                delay: 5000,
-                timer: 1000,
-                url_target: '_blank',
-                mouse_over: null,
-                animate: {
-                    enter: 'animated fadeInDown',
-                    exit: 'animated fadeOutUp'
-                },
-                onShow: null,
-                onShown: null,
-                onClose: null,
-                onClosed: null,
-                icon_type: 'class',
-                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                '<span data-notify="icon"></span> ' +
-                '<span data-notify="title">{1}</span> ' +
-                '<span data-notify="message">{2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                '</div>' +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                '</div>'
-            });
-            $timeout(function () {
-                window.location.href = "/gtx/pedido/updatePedido/?id="+response.data;
-            }, 2000);
-        })
+                var action = "/gtx/home/editPDF/?id=" + response.data;
 
 
+                event.preventDefault();
+                var newForm = jQuery('<form>', {
+                    'action': action,
+                    'target': '_blank',
+                    'method': 'post'
+                });
+                $(document.body).append(newForm);
+                newForm.submit();
+                //
+                $.notify({
+                    // options
+                    icon: '',
+                    title: 'O Pedido foi criado com sucesso',
+                    url: 'https://github.com/mouse0270/bootstrap-notify',
+                    target: '_blank'
+                }, {
+                    // settings
+                    element: 'body',
+                    position: null,
+                    type: "success",
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    showProgressbar: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: null,
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutUp'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class',
+                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                    '<span data-notify="icon"></span> ' +
+                    '<span data-notify="title">{1}</span> ' +
+                    '<span data-notify="message">{2}</span>' +
+                    '<div class="progress" data-notify="progressbar">' +
+                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                    '</div>' +
+                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                    '</div>'
+                });
+                $timeout(function () {
+                    window.location.href = "/gtx/pedido/updatePedido/?id=" + response.data;
+                }, 2000);
+            })
+
+        }
 
     }
     $scope.setPedido2 = function () {
@@ -772,73 +795,78 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
 
 
     $scope.setPedido = function () {
+        if ($scope.loader_send == false) {
 
-        $scope.loader_send = true;
+            $scope.loader_send = true;
 
-        $http({
+            $http({
 
                 method: 'POST',
                 url: "/gtx/pedido/setPedido",
-                data: $.param({produtos: $scope.produtos, id: $(".id-cliente").val(), variantes: $scope.dataProduto, pedido:$scope.dataPedido}),
+                data: $.param({
+                    produtos: $scope.produtos,
+                    id: $(".id-cliente").val(),
+                    variantes: $scope.dataProduto,
+                    pedido: $scope.dataPedido
+                }),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
             }).then(function (response) {
 
-            $scope.loader_send = false;
 
-            $scope.idPedido = response.data;
+                $scope.idPedido = response.data;
 
-            $.notify({
-                // options
-                icon: '',
-                title: 'O Pedido foi criado com sucesso',
-                url: 'https://github.com/mouse0270/bootstrap-notify',
-                target: '_blank'
-            },{
-                // settings
-                element: 'body',
-                position: null,
-                type: "success",
-                allow_dismiss: true,
-                newest_on_top: false,
-                showProgressbar: false,
-                placement: {
-                    from: "top",
-                    align: "right"
-                },
-                offset: 20,
-                spacing: 10,
-                z_index: 1031,
-                delay: 5000,
-                timer: 1000,
-                url_target: '_blank',
-                mouse_over: null,
-                animate: {
-                    enter: 'animated fadeInDown',
-                    exit: 'animated fadeOutUp'
-                },
-                onShow: null,
-                onShown: null,
-                onClose: null,
-                onClosed: null,
-                icon_type: 'class',
-                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                '<span data-notify="icon"></span> ' +
-                '<span data-notify="title">{1}</span> ' +
-                '<span data-notify="message">{2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                '</div>' +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                '</div>'
-            });
-            $timeout(function () {
-                window.location.href = "/gtx/home/clientes";
-            }, 2000);
-        })
+                $.notify({
+                    // options
+                    icon: '',
+                    title: 'O Pedido foi criado com sucesso',
+                    url: 'https://github.com/mouse0270/bootstrap-notify',
+                    target: '_blank'
+                }, {
+                    // settings
+                    element: 'body',
+                    position: null,
+                    type: "success",
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    showProgressbar: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: null,
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutUp'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class',
+                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                    '<span data-notify="icon"></span> ' +
+                    '<span data-notify="title">{1}</span> ' +
+                    '<span data-notify="message">{2}</span>' +
+                    '<div class="progress" data-notify="progressbar">' +
+                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                    '</div>' +
+                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                    '</div>'
+                });
+                $timeout(function () {
+                    window.location.href = "/gtx/home/clientes";
+                }, 2000);
+            })
+        }
     }
-
 }]);
 
 angular.module('app_landing').controller('pedidos_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {
@@ -918,15 +946,29 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
 
     $scope.quantidadeCam = function (id,prod) {
 
-        if($("#quantidade-"+id).val() > $scope.pedido.produtos[id].camisas.length){
+        $scope.quantidadeCam = function (id) {
 
-            $scope.addMoreCamisas(prod,id, true);
+            if($("#quantidade-"+id).val() > $scope.produtos[id].camisas.length){
+                var i;
+                for(i = 0; parseInt($("#quantidade-"+id).val()) >= i; i++){
+                    $scope.produtos[id].camisas.push({
+                        "camisa_nome": "",
+                        "camisa_tamanho": "",
+                        "camisa_numero": "",
+                        "camisa_short": "",
+                        "camisa_comentario": "",
+                    })
+                }
 
-        }else if($("#quantidade-"+id).val() == ""){
+                // $scope.addMoreCamisas(id, true);
 
-        }else if($("#quantidade-"+id).val() < $scope.pedido.produtos[id].camisas.length){
-            $scope.pedido.produtos[id].camisas.length = $("#quantidade-"+id).val();
-            $scope.calcTotal()
+            }else if($("#quantidade-"+id).val() == ""){
+
+            }else if($("#quantidade-"+id).val() < $scope.produtos[id].camisas.length){
+                $scope.produtos[id].camisas.length = $("#quantidade-"+id).val();
+                $scope.calcTotal()
+
+            }
 
         }
 
@@ -1623,6 +1665,8 @@ angular.module('app_landing').controller('pedidosCliente_ctrl', ['$scope', '$htt
 
     }).then(function (response) {
 
+        console.log(response.data)
+
         $scope.pedidos = response.data;
 
         $timeout(function () {
@@ -1727,73 +1771,74 @@ angular.module('app_landing').controller('addProduto_ctrl', ['$scope', '$http','
 
     $scope.setProduto = function () {
 
+        if ($scope.loader_send == false) {
 
-        if ($scope.produto.produto_nome) {
+            if ($scope.produto.produto_nome) {
 
-            $scope.loader_send = true;
+                $scope.loader_send = true;
 
-            $http({
+                $http({
 
-                method: 'POST',
-                url: "/gtx/produto/setProdutos",
-                data: $.param($scope.produto),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+                    method: 'POST',
+                    url: "/gtx/produto/setProdutos",
+                    data: $.param($scope.produto),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
-            }).then(function (response) {
+                }).then(function (response) {
 
-                $scope.loader_send = false;
 
-                $.notify({
-                    // options
-                    icon: '',
-                    title: 'O produto foi cadastrado com sucesso',
-                    url: 'https://github.com/mouse0270/bootstrap-notify',
-                    target: '_blank'
-                }, {
-                    // settings
-                    element: 'body',
-                    position: null,
-                    type: "success",
-                    allow_dismiss: true,
-                    newest_on_top: false,
-                    showProgressbar: false,
-                    placement: {
-                        from: "top",
-                        align: "right"
-                    },
-                    offset: 20,
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 5000,
-                    timer: 1000,
-                    url_target: '_blank',
-                    mouse_over: null,
-                    animate: {
-                        enter: 'animated fadeInDown',
-                        exit: 'animated fadeOutUp'
-                    },
-                    onShow: null,
-                    onShown: null,
-                    onClose: null,
-                    onClosed: null,
-                    icon_type: 'class',
-                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                    '<span data-notify="icon"></span> ' +
-                    '<span data-notify="title">{1}</span> ' +
-                    '<span data-notify="message">{2}</span>' +
-                    '<div class="progress" data-notify="progressbar">' +
-                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                    '</div>' +
-                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                    '</div>'
-                });
+                    $.notify({
+                        // options
+                        icon: '',
+                        title: 'O produto foi cadastrado com sucesso',
+                        url: 'https://github.com/mouse0270/bootstrap-notify',
+                        target: '_blank'
+                    }, {
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: "success",
+                        allow_dismiss: true,
+                        newest_on_top: false,
+                        showProgressbar: false,
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 5000,
+                        timer: 1000,
+                        url_target: '_blank',
+                        mouse_over: null,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                        onShow: null,
+                        onShown: null,
+                        onClose: null,
+                        onClosed: null,
+                        icon_type: 'class',
+                        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                        '<span data-notify="icon"></span> ' +
+                        '<span data-notify="title">{1}</span> ' +
+                        '<span data-notify="message">{2}</span>' +
+                        '<div class="progress" data-notify="progressbar">' +
+                        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                        '</div>' +
+                        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                        '</div>'
+                    });
 
-                $timeout(function () {
-                    window.location.href = "produtos";
-                }, 2000);
+                    $timeout(function () {
+                        window.location.href = "produtos";
+                    }, 2000);
 
-            })
+                })
+            }
         }
     }
 
@@ -2004,6 +2049,7 @@ angular.module('app_landing').controller('categoria_ctrl', ['$scope', '$http','$
     $scope.categoriaAdd = {
         "categoria_nome": ""
     }
+    $scope.loader_send = false;
 
     $http({
 
@@ -2021,32 +2067,66 @@ angular.module('app_landing').controller('categoria_ctrl', ['$scope', '$http','$
 
 
     $scope.setCategoria = function () {
-        $http({
+        if ($scope.loader_send == false) {
+            if ($scope.categoriaAdd.categoria_nome !== "" && $scope.categoriaAdd.categoria_nome !== null && $scope.categoriaAdd.categoria_nome !== undefined && $scope.categoriaAdd.categoria_nome !== "undefined") {
+                $scope.loader_send = true;
 
-            method: 'POST',
-            url: "/gtx/Produto/setCategorias",
-            data: $.param($scope.categoriaAdd),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+                $http({
 
-        }).then(function (response) {
+                    method: 'POST',
+                    url: "/gtx/Produto/setCategorias",
+                    data: $.param($scope.categoriaAdd),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
-            $http({
+                }).then(function (response) {
+                    $scope.categoriaAdd.categoria_nome = "";
+                    $http({
 
-                method: 'POST',
-                url: "/gtx/Produto/getCategorias",
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+                        method: 'POST',
+                        url: "/gtx/Produto/getCategorias",
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
-            }).then(function (response) {
+                    }).then(function (response) {
+                        $scope.loader_send = false;
+                        $scope.categorias = response.data
+                        $timeout(function () {
+                            $('#catTable').DataTable();
+                        }, 500);
+                    })
 
-                $scope.categorias = response.data
-                $timeout(function () {
-                    $('#catTable').DataTable();
-                }, 500);
-            })
-
-        })
+                })
+            }
+        }
     }
 
+    $scope.excluiCat = function (id) {
+
+                $http({
+
+                    method: 'POST',
+                    url: "/gtx/Produto/deleteCategorias",
+                    data: $.param({id: id}),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+                }).then(function (response) {
+                    $scope.categoriaAdd.categoria_nome = "";
+                    $http({
+
+                        method: 'POST',
+                        url: "/gtx/Produto/getCategorias",
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+                    }).then(function (response) {
+                        $scope.loader_send = false;
+                        $scope.categorias = response.data
+                        $timeout(function () {
+                            $('#catTable').DataTable();
+                        }, 500);
+                    })
+
+                })
+
+    }
 }]);
 
 angular.module('app_landing').controller('users_ctrl', ['$scope', '$http','$timeout', function ($scope, $http,$timeout) {

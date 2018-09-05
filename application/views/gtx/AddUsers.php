@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Email</label>
+                                        <label for="exampleInputEmail1">Tipo de Usuário</label>
                                         <select class="form-control" ng-model="user.user_tipo" required>
                                             <option value="1">Admin</option>
                                             <option value="2">Vendedor</option>
