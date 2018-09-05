@@ -950,10 +950,10 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
 
         $scope.quantidadeCam = function (id) {
 
-            if($("#quantidade-"+id).val() > $scope.produtos[id].camisas.length){
+            if($("#quantidade-"+id).val() > $scope.pedido.produtos[id].camisas.length){
                 var i;
                 for(i = 0; parseInt($("#quantidade-"+id).val()) >= i; i++){
-                    $scope.produtos[id].camisas.push({
+                    $scope.pedido.produtos[id].camisas.push({
                         "camisa_nome": "",
                         "camisa_tamanho": "",
                         "camisa_numero": "",
@@ -968,7 +968,7 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
             }else if($("#quantidade-"+id).val() == ""){
 
             }else if($("#quantidade-"+id).val() < $scope.produtos[id].camisas.length){
-                $scope.produtos[id].camisas.length = $("#quantidade-"+id).val();
+                $scope.pedido.produtos[id].camisas.length = $("#quantidade-"+id).val();
                 $scope.calcTotal()
 
             }
