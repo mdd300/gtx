@@ -79,7 +79,7 @@ class Produto extends CI_Controller {
         }
 
         $this->load->model("Produtos_model");
-        $retorno = $this->Produtos_model->deleteProduto_model($Data["id"]);
+        $retorno = $this->Produtos_model->deleteProduto_model($Data);
 
         if ($Output == true) {
             echo json_encode($retorno);

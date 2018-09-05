@@ -2105,7 +2105,7 @@ angular.module('app_landing').controller('categoria_ctrl', ['$scope', '$http','$
 
                     method: 'POST',
                     url: "/gtx/Produto/deleteCategorias",
-                    data: $.param({id: id}),
+                    data: $.param({categoria_id: id}),
                     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
                 }).then(function (response) {
