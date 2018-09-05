@@ -197,7 +197,7 @@
                                 </div>
                                     <div ng-repeat="camisa in insertCamisa | filter : {produto_id: produto.produto_id}">
                                         <hr style="width: 100%" />
-                                        <div ng-click="deleteCamisa($index)"
+                                        <div ng-click="deleteCamisa($index, $parent.$index)"
                                              style="position: relative;
                                                     right: 20px;
                                                     font-size: 2rem;

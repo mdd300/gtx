@@ -948,32 +948,94 @@ angular.module('app_landing').controller('pedido_ctrl', ['$scope', '$http','$tim
 
     $scope.quantidadeCam = function (id,prod) {
 
-        $scope.quantidadeCam = function (id) {
+        var cam = 0;
+        angular.forEach($scope.insertCamisa, function(value, key) {
+            if(value.produto_id === prod)
+                cam++;
+        });
+        // console.log($("#quantidade-"+id).val())
+        // console.log($scope.pedido.produtos[id].camisas.length)
+        // console.log(cam)
 
-            if($("#quantidade-"+id).val() > $scope.pedido.produtos[id].camisas.length){
-                var i;
-                for(i = 0; parseInt($("#quantidade-"+id).val()) >= i; i++){
-                    $scope.pedido.produtos[id].camisas.push({
-                        "camisa_nome": "",
-                        "camisa_tamanho": "",
-                        "camisa_numero": "",
-                        "camisa_short": "",
-                        "camisa_comentario": "",
-                    })
-                }
-                $scope.calcTotal()
+        if($("#quantidade-"+id).val() > $scope.pedido.produtos[id].camisas.length + cam){
+            var i;
+            var cal = $("#quantidade-"+id).val() - ($scope.pedido.produtos[id].camisas.length + cam)
+            for(i = 0; parseInt(cal) > i; i++){
+                $scope.insertCamisa.push({
+                    "camisa_nome": "",
+                    "camisa_tamanho": "",
+                    "camisa_numero": "",
+                    "camisa_short": "",
+                    "camisa_comentario": "",
+                    "produto_id": prod
+                })
+                        }
+            $scope.calcTotal()
 
-                // $scope.addMoreCamisas(id, true);
+            // $scope.addMoreCamisas(prod,id, true);
 
-            }else if($("#quantidade-"+id).val() == ""){
+        }else if($("#quantidade-"+id).val() == ""){
 
-            }else if($("#quantidade-"+id).val() < $scope.produtos[id].camisas.length){
-                $scope.pedido.produtos[id].camisas.length = $("#quantidade-"+id).val();
-                $scope.calcTotal()
-
-            }
+        }else if($("#quantidade-"+id).val() < $scope.pedido.produtos[id].camisas.length ){
+            console.log(4)
+            $scope.pedido.produtos[id].camisas.length = $("#quantidade-"+id).val()
+            angular.forEach($scope.insertCamisa, function(value, key) {
+                    if (value.produto_id === prod) {
+                        $scope.insertCamisa.splice(key, 1)
+                        i++;
+                    }
+            });
+            $scope.calcTotal()
 
         }
+        else if($("#quantidade-"+id).val() == $scope.pedido.produtos[id].camisas.length ){
+            console.log(3)
+            angular.forEach($scope.insertCamisa, function(value, key) {
+                if (value.produto_id === prod) {
+                    $scope.insertCamisa.splice(key, 1)
+                }
+            });
+            $scope.calcTotal()
+
+        }else if($("#quantidade-"+id).val() < $scope.pedido.produtos[id].camisas.length + cam){
+            var ca = ($scope.pedido.produtos[id].camisas.length + cam) - $("#quantidade-"+id).val() ;
+            var i = 0;
+            angular.forEach($scope.insertCamisa, function(value, key) {
+                if (value.produto_id === prod) {
+                    $scope.insertCamisa.splice(key, 1)
+                }
+            });
+            // $scope.pedido.produtos[id].camisas.length = $("#quantidade-"+id).val();
+            $scope.calcTotal()
+
+        }
+
+        // $scope.quantidadeCam = function (id) {
+        //
+        //     if($("#quantidade-"+id).val() > $scope.pedido.produtos[id].camisas.length){
+        //         var i;
+        //         for(i = 0; parseInt($("#quantidade-"+id).val()) >= i; i++){
+        //             $scope.pedido.produtos[id].camisas.push({
+        //                 "camisa_nome": "",
+        //                 "camisa_tamanho": "",
+        //                 "camisa_numero": "",
+        //                 "camisa_short": "",
+        //                 "camisa_comentario": "",
+        //             })
+        //         }
+        //         $scope.calcTotal()
+        //
+        //         // $scope.addMoreCamisas(id, true);
+        //
+        //     }else if($("#quantidade-"+id).val() == ""){
+        //
+        //     }else if($("#quantidade-"+id).val() < $scope.produtos[id].camisas.length){
+        //         $scope.produtos[id].camisas.length = $("#quantidade-"+id).val();
+        //         $scope.calcTotal()
+        //
+        //     }
+        //
+        // }
 
     }
 
@@ -1578,7 +1640,7 @@ $scope.updatePedido = function () {
         $scope.calcTotal()
 
     }
-    $scope.deleteCamisa = function (id) {
+    $scope.deleteCamisa = function (id,prod) {
 
         $scope.insertCamisa.splice(id, 1);
         $scope.pedido.produtos[prod].quant--;
