@@ -477,7 +477,7 @@ class Home extends CI_Controller {
             'even' => array ()));
         // Define um rodapé para o arquivo PDF, nesse caso inserindo o número da
         // página através da pseudo-variável PAGENO
-        $mpdf->SetFooter('{PAGENO}');
+        $mpdf->SetFooter('<div> <b>Pedido N˚</b>: '.$data["pedido"]->pedido_id." Realizado em: ".$data["pedido"]->pedido_data.'</div>');
         // Insere o conteúdo da variável $html no arquivo PDF
         $mpdf->writeHTML($html);
         // Cria uma nova página no arquivo
@@ -567,7 +567,7 @@ class Home extends CI_Controller {
             'even' => array ()));
         // Define um rodapé para o arquivo PDF, nesse caso inserindo o número da
         // página através da pseudo-variável PAGENO
-        $mpdf->SetFooter('{PAGENO}');
+        $mpdf->SetFooter('<div> <b>Pedido N˚</b>: '.$Data["id"]." Realizado em: ".$Data["data"].'</div>');
         // Insere o conteúdo da variável $html no arquivo PDF
         $mpdf->writeHTML($html);
         // Cria uma nova página no arquivo

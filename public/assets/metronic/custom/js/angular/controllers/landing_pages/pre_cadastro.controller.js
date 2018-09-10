@@ -341,6 +341,7 @@ angular.module('app_landing').controller('addPedido_ctrl', ['$scope', '$http','$
 
     $scope.dataPedido = {
         "pedido_frete": 0,
+        "pedido_data_entrega":"",
         "pedido_desconto": 0
     }
 
@@ -2070,7 +2071,7 @@ angular.module('app_landing').controller('pdf_ctrl', ['$scope', '$http','$timeou
 
     $scope.gerar = false;
 
-    $scope.gerarPDF = function () {
+    $scope.gerarPDF = function (data) {
         $scope.loader_send = true;
 
         $("#inputAss").remove();
@@ -2085,7 +2086,7 @@ angular.module('app_landing').controller('pdf_ctrl', ['$scope', '$http','$timeou
 
             method: 'POST',
             url: "/gtx/home/gerarPDF",
-            data: $.param({content: $(".pdf-content").prop('outerHTML'), id: id}),
+            data: $.param({content: $(".pdf-content").prop('outerHTML'), id: id, data: data}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
         }).then(function (response) {

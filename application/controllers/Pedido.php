@@ -51,6 +51,11 @@ class Pedido extends CI_Controller {
             }
 
         }
+        $this->load->model("Home_model");
+        $cliente = $this->Home_model->getCliente_model($Data["id"])[0];
+
+        $this->load->library('Fo_api');
+        Fo_api::sendEmailPedido($cliente->cliente_nome. " ". $cliente->cliente_sobrenome, $cliente->cliente_email);
 
         $retorno = $pedido;
 

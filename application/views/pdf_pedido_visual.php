@@ -189,7 +189,7 @@
                                 </div>
                             </div>
 
-                            <p>Sr(a). <?=$pedido->cliente_nome?>, segue o orçamento na forma em solicitada em, <?= $pedido->pedido_data?></p>
+                            <p>Sr(a). <?=$pedido->cliente_nome?>, segue o orçamento na forma em solicitada em, <?= $pedido->pedido_data?> com previsão de entrega para <?= $pedido->pedido_data_entrega?></p>
 
                             <table style="width: 100%">
                                     <tr style="">

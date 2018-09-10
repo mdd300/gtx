@@ -56,6 +56,14 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label >Data de entrega</label>
+                                        <input name="pedido_data_entrega" type="text" class="form-control pedido_data_entrega" placeholder="pedido_data_entrega" ng-model="pedido.pedido_data_entrega">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Valor do frete</label>
@@ -314,4 +322,9 @@
     </div>
 </div>
 </div>
-
+<script src="<?=base_url()?>public/assetsBoot/js/jquery.mask.min.js"></script>
+<script>
+    $(function(){
+        $(".pedido_data_entrega").mask("99/99/9999");
+    });
+</script>

@@ -44,10 +44,28 @@
                                         <input name="cliente_username" disabled type="text" class="form-control" placeholder="Nome do Usuário" value="{{pedido.cliente_username}}">
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label  for="exampleInputEmail1">Email</label>
                                         <input name="cliente_email" disabled type="email" class="form-control" placeholder="Email" value="{{pedido.cliente_email}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label >Pedido N˚</label>
+                                        <input name="pedido_id" type="text" class="form-control pedido_id" placeholder="Pedido" ng-model="pedido.pedido_id">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label >Data Pedido</label>
+                                        <input name="pedido_data" type="text" class="form-control pedido_data" placeholder="Data" ng-model="pedido.pedido_data">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label >Data de entrega</label>
+                                        <input name="pedido_data_entrega" type="text" class="form-control pedido_data_entrega" placeholder="Data de entrega" ng-model="pedido.pedido_data_entrega">
                                     </div>
                                 </div>
                                     <div class="col-md-6">
@@ -360,3 +378,10 @@
     </div>
     </div>
 </div>
+<script src="<?=base_url()?>public/assetsBoot/js/jquery.mask.min.js"></script>
+<script>
+    $(function(){
+        $(".pedido_data_entrega").mask("99/99/9999");
+        $(".pedido_data").mask("99/99/9999");
+    });
+</script>

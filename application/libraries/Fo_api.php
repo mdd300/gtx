@@ -127,6 +127,36 @@ class Fo_api
 
     }
 
+    public static function sendEmailPedido($nome,$email)
+    {
+        $CI = &get_instance();
+
+        $CI->load->library(['Fo_email']);
+
+
+        $msg = '<div style="width: 800px">
+<img style="margin-left: 160px; height: 125px; width: 250px" src="https://gtxsports.com.br/wp-content/uploads/2017/07/gtxSports_blk.png">
+
+   
+    <img height="290" width="600" style="margin-left 100px; border-radius: 20px" src="https://gtxsports.com.br/wp-content/uploads/2017/07/slide_20estados.jpg">
+'
+            .'<div style=" widt:80%; padding: 20px 0px;">'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;display: inline-flex""> Olá <div style="color: #4682B4; font-weight: bold;display: inline-flex; "> &nbsp;'.$nome.'</div></p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px; display: inline-flex">Seu pedido foi realizado com sucesso</div></p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Obrigado por escolher a GTX Sports.</p>'
+            . '<p style="color:#696969;font-size:15px;font-family:Multicolore;margin:0px;"> Acesse seu pedido em: </p>' . base_url('home/cliente')
+            . '</p></div>'
+            .'</div>';
+        $Data['to'] = $email;
+        $Data['name'] = 'GTX';
+        $Data['html'] = $msg;
+        $Data['subject'] = 'O status do seu pedido foi alterado!';
+
+        $resp_email = Fo_email::from_system($Data);
+
+    }
+
+
     public static function novo_cod($email, $code)
     {
 

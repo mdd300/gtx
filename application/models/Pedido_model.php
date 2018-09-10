@@ -15,10 +15,11 @@ class Pedido_model extends CI_Model {
 
         $data = array(
             "cliente_id"=> $cliente,
-            "pedido_data" => date('d/m/Y h:m:s'),
+            "pedido_data" => date('d/m/Y h:m'),
             "pedido_status" => AGUARDANDO,
             "pedido_frete" => $pedido["pedido_frete"],
-            "pedido_desconto" => $pedido["pedido_desconto"]
+            "pedido_desconto" => $pedido["pedido_desconto"],
+            "pedido_data_entrega" => $pedido["pedido_data_entrega"]
         );
 
         $this->db->insert("tb_pedido",$data);
@@ -125,7 +126,7 @@ class Pedido_model extends CI_Model {
         $this->db->where("pedido_id",$pedido["pedido_id"]);
         $this->db->set("pedido_status", $pedido["pedido_status"]);
         $this->db->set("pedido_frete", $pedido["pedido_frete"]);
-        $this->db->set("pedido_desconto", $pedido["pedido_desconto"]);
+        $this->db->set("pedido_data_entrega", $pedido["pedido_data_entrega"]);
         $this->db->update("tb_pedido");
     }
 
